@@ -1,0 +1,108 @@
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+{% block body %}
+<div class="container-fluid"> 
+    <h3 class="m-4">All Babies</h3>
+    <a href="#" class="btn btn-primary m-">Learn More</a>
+     <div class="row">
+        <div class="col-12">
+            {% if babies %}
+            <div class="card border-primary mb-4 ms-4 me-4">
+                <div class="card-header">Baby Records</div>
+                <div class="card-body">
+                  <p class="card-text">
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>                                 
+                            <th>Baby No_</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Gender</th>
+                            <th>Age</th>
+                            <th>Location</th>
+                            <th>Parents name</th>
+                            <th>Time Spent</th>
+                            <th>Dropped by</th>
+                            <th>Picked by</th>
+                            <th>TimeIn</th>
+                            <th>TimeOut</th>
+                            <th >Actions </th>
+                          </tr>
+                        </thead>
+                        <tbody> 
+                            {% for baby in babies %}
+                                <tr class="table-primary">
+                                  <td >{{ baby.id}}</td>
+                                  <td >{{ baby.b_firstname}}</td>
+                                  <td >{{ baby.b_lastname}}</td>
+                                  <td >{{ baby.b_gender}}</td>
+                                  <td >{{ baby.b_age}}</td>
+                                  <td >{{ baby.b_location}}</td>
+                                  <td >{{ baby.b_parentsname}}</td>
+                                  <td >{{ baby.periodofstay}}</td>
+                                  <td >{{ baby.b_broughtby}}</td>
+                                  <td >{{ baby.b_pickedby}}</td>
+                                  <td >{{ baby.timein}}</td>
+                                  <td >{{ baby.timeout}}</td>
+                                  <td>
+                                    <button type="button" class=" btn btn-success me-1" href="{% url 'view_baby' baby.id %}"data-bs-toggle="modal"data-bs-target="#myModal{{baby.id}}">
+                                      <i class="fa-solid fa-circle-info fa-lg"></i>
+                                    </button>
+                                    <!--Modal component-->
+                                    <div class="modal"id="myModal{{baby.id}}"tabindex="-1" aria-labelledby="myModalLabel1"aria-hidden="true">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title">
+                                              Baby {{ baby.first_name }} {{ baby.last_name }}
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true"></span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <ul class="list-unstyled">
+                                              <li>Baby Number: <strong>Baby:{{baby.id}}</strong></li>
+                                              <li>First Name: <strong>{{baby.b_firstname}}</strong></li>
+                                              <li>Last Name: <strong>{{baby.b_lastname}}</strong></li>
+                                              <li>Gender: <strong>{{baby.b_gender}}</strong></li>
+                                              <li>Age: <strong> {{baby.b_age}}</strong></li>
+                                              <li>TimeIn: <strong>{{baby.timein}}</strong></li>
+                                              <li>TimeOut: <strong>{{baby.timeout}}</strong></li>
+                                              <li>Pickedby: <strong>{{baby.b_pickedby}}</strong></li>
+                                              <li>Droppedby: <strong>{{baby.b_broughtby}}</strong></li>
+                                              <li>Parents Name: <strong>{{baby.b_parentsname}}</strong></li>
+                                            </ul>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                  <a class="btn btn-warning me-1" href="{% url 'b_edit' baby.id %}">
+                                    <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                  </a>  
+                                 
+                                  <a class="btn btn-danger me-1" href="{% url 'delete_baby' baby.id %}">
+                                    <i class="fa-solid fa-trash fa-lg"></i>
+                                  </a>  
+                                  </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                  </p>
+                </div>
+            </div>  
+            {% else %}
+            <h5 class="alert alert-primary ms-4 me-4">No Baby Records</h5>
+            {% endif %}
+        </div>
+     </div>
+</div>
+
+{% endblock %}

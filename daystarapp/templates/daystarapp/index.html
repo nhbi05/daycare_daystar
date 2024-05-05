@@ -1,0 +1,49 @@
+<!--This is the home page-->
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <!--<div class="col-md-6" style="
+            width: 100px;">
+            <div width="300px" height="100px">
+              <img class="card-img-top" src="{% static 'IMG/logo2.png' %}" alt="" height="100" width="100">
+            </div>-->
+          </div>
+        </div>
+        <h1 class="text-center mb-5">Welcome to DayStar_Daycare</h1>
+        <div class="container">
+          <br> <br>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3" >
+                    <div class="card-body">
+                      <h6 class="card-title">{{ count_babies }}</h6>
+                      <h5 class="card-title">BABIES ADMITTED</h5>
+                      <p class="card-text">Information about sitters employed goes here.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6>{{ count_sitters }}</h6>
+                        <h5 class="card-title">SITTERS EMPLOYED</h5>
+                        <p class="card-text">Information about sitters employed goes here.</p>
+                        <a href="/sitter/" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3" >
+                    <div class="card-body">
+                        <h6>{{ count_payments }}</h6>
+                        <h5 class="card-title">PAYMENTS</h5>
+                        <p class="card-text">Information about dolls sold goes here.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DayStar</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min (3).css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
+</head>
+<body class="d-flex flex-column min-vh-100" >
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <img src="{% static 'IMG/logo.png' %}" alt="" width="60px" height="60px">  
+          <a class="navbar-brand" href="{% url 'index' %}">DAYSTAR DAYCARE</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Home
+                  <span class="visually-hidden">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/baby/">All Babies</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/sitter/">Sitters</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/payments">Payment</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Procurement</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <input class="form-control me-sm-2" type="search" placeholder="Search">
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <div class=" container-fluid">
+        <footer class="mt-auto mb-4">
+          {% block body %}
+          {% endblock %}
+        <div class="text-center">
+          <span>
+            Copyright&copy;<script>document.write(new Date().getFullYear())</script>Daystar Daycare
+          </span>
+        </div>
+
+      </footer>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" ></script>
+</body>
+</html>

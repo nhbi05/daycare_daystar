@@ -1,0 +1,39 @@
+{% extends "daystarapp/base.html" %}
+{% load static %}
+{% block body %}
+    <h3 class="text-center m-4">Create Payment</h3>
+    {% if success %}
+        <div class = "alert alert-success" role="alert">
+            The New Payment been added successfully.
+            <a href="{% url 'sitter' %}" class="alert-link">Go to Sitters' Page.</a>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card border-light mb-3">
+                    <div class="card-header">
+                        <i class="fa-solid fa-address-card fa-lg"></i>Payment
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'create_payment' %}" method="POST">
+                            {% csrf_token %}
+                            {{ form1.as_p }}
+                            <input type="hidden" name="baby_id" value="{{ baby_id.id }}">
+                            <button type="submit"class="btn btn-primary">Create Payment</button>
+                            <a href="{% url 'index' %}"class="btn btn-secondary">Cancel</a>
+
+                        </form>
+                    </div>
+                </div>   
+            </div>
+        </div>  
+    {% endif %}  
+{% endblock %}
+
+<h1>Create Payment</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="baby_id" value="{{ baby_id.id }}">
+    <button type="submit">Create Payment</button>
+</form>
