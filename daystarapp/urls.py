@@ -2,7 +2,11 @@ from django.urls import path
 from daystarapp import views
 
 urlpatterns=[
-    path('', views.index,name="index"),
+    path('', views.landing_page,name="landingpage"),
+    path('register/', views.register,name="register"),
+    path('login/', views.login,name="login"),
+    path('index/', views.index,name="index"),
+    path('logout/', views.user_logout,name="logout"),
     path('baby/', views.baby,name="baby"),
     path('baby_reg/', views.addBaby,name="baby_reg"),
     path('<int:id>',views.view_baby, name='view_baby'),

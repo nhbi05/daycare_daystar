@@ -1,0 +1,17 @@
+{% extends "daystarapp/base.html" %}
+{% load static %}
+{% block body %}
+<body>
+    <br>
+    <br>
+    <div class="text-center">
+     <h2>DayStar Daycare</h2>  
+     <img src="{% static 'IMG/logo.png' %}" alt="" width="300px" height="300px">  
+    <br>
+
+    <h5>Shining Bright, One Child at a Time</h5>
+    <a class="btn btn-primary " type="button" href="{% url 'register' %}"> Create Your Account</a>
+    </div>
+   
+</body>
+{% endblock %} 

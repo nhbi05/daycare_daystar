@@ -3,10 +3,50 @@ from .models import *
 from .forms import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import auth
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 #def index(request):
     #return render (request, 'daystarapp/index.html')
+def landing_page (request):
+    return render (request, 'daystarapp/landingpage.html')
 
+#Register the user
+def register(request):
+    form3 = CreateUserForm()
+    if request.method =="POST":
+        form3 = CreateUserForm(request.POST)
+        if form3.is_valid():
+            form3.save()
+            return redirect('login')
+    context = {'form3':form3}
+    return render(request, 'daystarapp/register.html',context=context)        
+
+#- login a user
+def login(request):
+    form4 = LoginForm()
+    if request.method =="POST":
+        form4 = LoginForm(request, data=request.POST) 
+        if form4.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                auth.login(request, user)
+                return redirect('index')
+    return render(request, 'daystarapp/login.html', {
+        'form4':form4,
+
+        })     
+
+def user_logout(request):
+    auth.logout(request)
+    return redirect('login')
+
+         
+
+@login_required(login_url='login')
 def index(request):
     # stats
     count_babies = Baby.objects.count()
@@ -18,6 +58,7 @@ def index(request):
         "count_payments": count_payments,
     }
     return render(request, "daystarapp/index.html", context)
+
 
 def baby(request):
     return render (request, 'daystarapp/baby.html' , {
@@ -38,7 +79,7 @@ def payment(request):
         'payments':Payment.objects.all()
         })
 
-
+@login_required
 def addBaby(request):
     if request.method == 'POST':
         form = BabyForm(request.POST)
@@ -85,6 +126,7 @@ def view_baby(request, id):
     baby = Baby.objects.get(pk=id)
     return HttpResponseRedirect(reverse('baby'))
 
+
 def babyedit(request, id):
     baby = Baby.objects.get(id=id)
     if request.method == 'POST':
@@ -100,13 +142,13 @@ def babyedit(request, id):
         "form2":form2,
         'baby': baby
     }) 
-
+@login_required
 def delete_baby(request, id):
     Baby.objects.filter(id=id).delete()
     redirect_url = reverse('baby')
     return HttpResponseRedirect(redirect_url)
 
-
+@login_required
 #sitter views
 def addSitter(request):
     if request.method == 'POST':
