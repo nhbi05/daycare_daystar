@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block body %}
-    <h3 class="text-center m-4">Update Baby</h3>
+    <h3 class="text-center m-4">Update Sitter</h3>
     {% if success %}
         <div class = "alert alert-success" role="alert">
             The Sitter been updated successfully.
@@ -20,7 +20,7 @@
                             {% csrf_token %}
                             {{ form1|crispy }}
                             <button type="submit"class="btn btn-primary">Add</button>
-                            <a href="{% url 'index' %}"class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'sitter' %}"class="btn btn-secondary">Cancel</a>
 
                         </form>
                     </div>

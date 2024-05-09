@@ -46,7 +46,7 @@ class Sitter(models.Model):
 
     def __str__(self):
         return f'Baby:{self.s_firstname}{self.s_lastname}'    
-    
+   
 class Payment(models.Model):
     payment_name = models.ForeignKey(Baby, on_delete=models.CASCADE, null=True, blank=True)
     PAYMENT_TYPES = (
@@ -62,17 +62,26 @@ class Payment(models.Model):
         ('USD', 'USD'),
         ('UGX', 'UGX'),
     )
-    receipt_no = models.CharField(max_length=100, null=True, blank=True)
-    payment_mode = models.CharField(max_length=100 , choices= PAYMENT_MODES, null=True, blank=True)
-    payment_type = models.CharField(max_length=10, choices=PAYMENT_TYPES)
-    payment_currency = models.CharField(max_length=10, choices=PAYMENT_CURRENCYS, null=True , blank=True)
+    #receipt_no = models.CharField(max_length=100, null=True, blank=True)
+    payment_mode = models.CharField(max_length=100 , choices= PAYMENT_MODES ,null=True, blank=True)
+    payment_type = models.CharField (max_length=10, choices=PAYMENT_TYPES ,null=True, blank=True)
+    payment_currency = models.CharField(max_length=10, choices=PAYMENT_CURRENCYS,null=True, blank=True)
     payment_date = models.DateField(auto_now_add=True)
     amount = models.FloatField()
 
     def __str__(self):
         return f'Payment for {self.payment_name.b_firstname} {self.payment_name.b_lastname} - {self.payment_type} on {self.payment_date}'
     
-#class SitterPayment(models.Model):
+class SitterPayment(models.Model):
+    sitter_name = models.ForeignKey(Sitter, on_delete=models.CASCADE)
+    babies_assigned = models.ForeignKey(Baby, on_delete=models.CASCADE, null=True, blank=True)
+    status = models.CharField(max_length=100)
+    daily_salary=models.FloatField()
+    paid_on = models.DateTimeField()
+    def __str__(self):
+        return f'Payment for {self.sitter_name}  on {self.paid_on}'
+    
+
 
     
 class Procurement(models.Model):

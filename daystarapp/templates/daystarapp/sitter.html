@@ -1,7 +1,11 @@
 {% extends 'daystarapp/base.html' %}
 {% load static %}
 {% block body %}
-<div class="container-fluid"> 
+
+<div class="row justify-content-center " >
+    <a href="{% url "sitter_reg" %}" class="btn btn-primary">Add Sitter</a>
+</div>                                                    
+<div class="modal-footer"><div class="container-fluid"> 
     <h3 class="m-4">All Sitters</h3>
      <div class="row">
         <div class="col-12">
@@ -52,7 +56,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">
-                                                            Baby {{ sitter.s_firstname}} {{ sitter.s_lastname}}
+                                                            Sitter {{ sitter.s_firstname}} {{ sitter.s_lastname}}
                                                         </h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true"></span>
@@ -66,24 +70,22 @@
                                                             <li>Gender: <strong>{{sitter.s_gender}}</strong></li>
                                                             <li>Age: <strong> {{sitter.s_age}}</strong></li>
                                                             <li>Location: <strong>{{sitter.s_location}}</strong></li>
-                                                            <li>Recommenders Name: <strong>{{sitter.s_recommendersname}}</strong></li>
+                                                            <li>Next of Kin: <strong>{{sitter.s_nextofkin}}</strong></li>
                                                             <li>NIN: <strong>{{sitter.s_NIN}}</strong></li>
-                                                            <li>Contact: <strong>{{sitter.s_contact}}</strong></li>
-                                                            <li>Next of Kin:<strong>{{sitter.s_nextofkin}}</strong></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="modal-footer">
+                                                            <li>Education Level: <strong>{{sitter.s_educationlevel}}</strong></li>
+                                                        </ul>       
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <a class="btn btn-warning me-1" href="{% url 's_edit' sitter.id %}">
+                                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                                          </a>  
+                                                          <a class="btn btn-danger me-1" href="{% url 'delete_sitter' sitter.id %}">
+                                                            <i class="fa-solid fa-trash fa-lg"></i>
+                                                          </a> 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <a class="btn btn-warning me-1" href="{% url 's_edit' sitter.id %}">
-                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                          </a>  
-                                          <a class="btn btn-danger me-1" href="{% url 'delete_sitter' sitter.id %}">
-                                            <i class="fa-solid fa-trash fa-lg"></i>
-                                          </a> 
+                                        
                                     </td>
                                 </tr>
                             {% endfor %}

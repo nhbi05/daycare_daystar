@@ -1,39 +1,88 @@
 {% extends "daystarapp/base.html" %}
 {% load static %}
+
 {% block body %}
-    <h3 class="text-center m-4">Create Payment</h3>
-    {% if success %}
-        <div class = "alert alert-success" role="alert">
-            The New Payment been added successfully.
-            <a href="{% url 'sitter' %}" class="alert-link">Go to Sitters' Page.</a>
+<div class="container-fluid"> 
+    <h3 class="m-4">All Payments</h3>
+    <div class="row">
+        <div class="col-12">
+            {% if payments %}
+            <div class="card border-primary mb-4 ms-4 me-4">
+                <div class="card-header">Payment Records</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Receipt No</th>
+                                    <th>Baby's Name</th>
+                                    <th>Payment Mode</th>
+                                    <th>Payment Type</th>
+                                    <th>Payment Currency</th>
+                                    <th>Amount</th>
+                                    <th>Date Paid</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in payments %}
+                                <tr class="table-primary">
+                                    <td>{{ payment.id }}</td>
+                                    <td>{{ payment.payment_name }}</td>
+                                    <td>{{ payment.payment_mode }}</td>
+                                    <td>{{ payment.payment_type }}</td>
+                                    <td>{{ payment.payment_currency }}</td>
+                                    <td>{{ payment.amount }}</td>
+                                    <td>{{ payment.payment_date }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success me-1" data-bs-toggle="modal" data-bs-target="#myModal{{ payment.id }}">
+                                            <i class="fa-solid fa-circle-info fa-lg"></i>
+                                        </button>
+                                        <div class="modal"id="myModal{{payment.id}}"tabindex="-1" aria-labelledby="myModalLabel1"aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">
+                                                            Baby {{ sitter.s_firstname}} {{ sitter.s_lastname}}
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"></span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <ul class="list-unstyled">
+                                                            <li>Receipt No: <strong>{{payment.id}}</strong></li>
+                                                            <li>Payment For: <strong>{{ payment.payment_name}}</strong></li>
+                                                            <li>Mode of Payment: <strong>{{ payment.payment_mode}}</strong></li>
+                                                            <li>Type of Payment: <strong>{{payment.payment_type}}</strong></li>
+                                                            <li>Currency: <strong> {{payment.payment_currency}}</strong></li>
+                                                            <li>Amount Paid: <strong>{{payment.amount }}</strong></li>
+                                                            <li>Payment Date: <strong>{{payment.payment_date}}</strong></li>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <a class="btn btn-warning me-1" href="{% url 'update_payment' payment.id %}">
+                                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                                        </a>  
+                                                        <a class="btn btn-danger me-1" href="{% url 'delete_payment' payment.id %}">
+                                                            <i class="fa-solid fa-trash fa-lg"></i>
+                                                        </a> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>  
+            {% else %}
+            <h5 class="alert alert-primary ms-4 me-4">No Records</h5>
+            {% endif %}
         </div>
-    {% else %}
-        <div class="row justify-content-center">
-            <div class="col-6">
-                <div class="card border-light mb-3">
-                    <div class="card-header">
-                        <i class="fa-solid fa-address-card fa-lg"></i>Payment
-                    </div>
-                    <div class="card-body">
-                        <form action="{% url 'create_payment' %}" method="POST">
-                            {% csrf_token %}
-                            {{ form1.as_p }}
-                            <input type="hidden" name="baby_id" value="{{ baby_id.id }}">
-                            <button type="submit"class="btn btn-primary">Create Payment</button>
-                            <a href="{% url 'index' %}"class="btn btn-secondary">Cancel</a>
+    </div>
+</div>
 
-                        </form>
-                    </div>
-                </div>   
-            </div>
-        </div>  
-    {% endif %}  
 {% endblock %}
-
-<h1>Create Payment</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="hidden" name="baby_id" value="{{ baby_id.id }}">
-    <button type="submit">Create Payment</button>
-</form>

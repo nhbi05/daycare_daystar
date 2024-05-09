@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
 </head>
 <!--{% if user.is_authenticated %}-->
-<body class="d-flex flex-column min-vh-100" >
+<body class="d-flex flex-column min-vh-100 pink-background" style="background-color: #F2F3F4;" >
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
             <img src="{% static 'IMG/logo.png' %}" alt="" width="60px" height="60px">  
@@ -26,16 +26,20 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/baby/">All Babies</a>
+                <a class="nav-link" href="/baby/">
+                  <i class="fa-solid fa-baby fa-lg"></i>All Babies</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/sitter/">Sitters</a>
+                <a class="nav-link" href="/sitter/">
+                  Sitters</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/payments">Payment</a>
+                <a class="nav-link" href="/payments/">
+                  <i class="fa-regular fa-credit-card fa-lg"></i>Payment</a>
               </li>
               <li class="nav-item"> 
-                <a class="nav-link" href="#">Procurement</a>
+                <a class="nav-link" href="#">
+                  <i class="fa-solid fa-cart-shopping fa-lg"></i>Procurement</a>
               </li>
             </ul>
             <form class="d-flex">

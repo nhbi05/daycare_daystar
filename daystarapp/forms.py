@@ -80,4 +80,44 @@ class SitterForm(forms.ModelForm):
         
     }    
 
-            
+class PaymentForm(forms.ModelForm):
+    class Meta: 
+        model = Payment
+        fields = [ #'receipt_no',
+                  'payment_name','payment_type', 'payment_mode','payment_currency', 'amount'] 
+        labels = {
+        #'receipt_no': 'Receipt No',   
+        'payment_name' :'Payment Name',   
+        'payment_type' :'Payment type', 
+        'payment_mode': 'Payment Mode',
+        'payment_currency': 'Payment Currency',
+        'amount':'Amount',
+          }  
+    widgets = {
+        #'receipt_no':forms.Select(attrs={'class':'form-control'}),
+        'payment_name':forms.Select(attrs={'class':'form-control'}),
+        'payment_type':forms.Select(attrs={'class':'form-control'}),
+        'payment_mode':forms.Select(attrs={'class':'form-control'}), 
+        'payment_currency':forms.Select(attrs={'class':'form-control'}), 
+        'amount': forms.Select(attrs={'class':'form-control'}),
+        
+    } 
+
+class ProcurementForm(forms.ModelForm):
+    class Meta: 
+        model = Procurement
+        fields = [ #'receipt_no',
+                  'quantity','item_name', 'procurement_cost'] 
+        labels = {
+        #'receipt_no': 'Receipt No',   
+        'item_name' :'Item_name',   
+        'quantity' :'Quantity', 
+        'procurement_cost': 'Procurement Cost',
+          }  
+    widgets = {
+        #'receipt_no':forms.Select(attrs={'class':'form-control'}),
+        'item_name':forms.TextInput(attrs={'class':'form-control'}),
+        'quantity':forms.NumberInput(attrs={'class':'form-control'}),
+        'procurement_cost':forms.NumberInput(attrs={'class':'form-control'}), 
+    }     
+   
