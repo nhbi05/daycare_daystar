@@ -1,17 +1,59 @@
-{% extends "daystarapp/base.html" %}
+<!--THIS IS THE NAVBAR BEFORE AUTHENTICATION-->
 {% load static %}
-{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DayStar</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min (3).css' %}"> <!--MY STATIC BOOTSTRAP FILE-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"><!--MY CSS FILE-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
+</head>
 <body>
-    <br>
-    <br>
-    <div class="text-center">
-     <h2>DayStar Daycare</h2>  
-     <img src="{% static 'IMG/logo.png' %}" alt="" width="300px" height="300px">  
-    <br>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">DayStar Daycare</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    {% if user.is_authenticated %}
+                        <!-- If the user is authenticated -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <!-- If the user is not authenticated -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <h5>Shining Bright, One Child at a Time</h5>
-    <a class="btn btn-primary " type="button" href="{% url 'register' %}"> Create Your Account</a>
+    {% block body %}
+    <div class="container">
+        <br>
+        <br>
+        <div class="text-center">
+            <h2>DayStar Daycare</h2>  
+            <img src="{% static 'IMG/logo.png' %}" alt="" width="300px" height="300px">  
+            <br>
+            <h5>Shining Bright, One Child at a Time</h5>
+            <a class="btn btn-primary" href="{% url 'register' %}" role="button">Create Your Account</a>
+        </div>
     </div>
-   
+    {% endblock %} 
+
+    
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
-{% endblock %} 
+</html>

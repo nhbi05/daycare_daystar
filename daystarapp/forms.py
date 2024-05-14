@@ -103,11 +103,33 @@ class PaymentForm(forms.ModelForm):
         
     } 
 
+class SitterPaymentForm(forms.ModelForm):
+    class Meta: 
+        model = SitterPayment
+        fields = [ #'receipt_no',
+                  'sitter_name','babies_assigned', 'status'] 
+        labels = {
+        #'receipt_no': 'Receipt No',   
+        'sitter_name ':'Sitter Name',   
+        'babies_assigned' :'Babies Assigned', 
+        'status': 'Status',
+        #'daily_salary': 'Daily Salary',
+          }  
+    widgets = {
+        #'receipt_no':forms.Select(attrs={'class':'form-control'}),
+        'sitter_name':forms.Select(attrs={'class':'form-control'}),
+        'babies_assigned': forms.SelectMultiple(attrs={'class': 'form-control'}),
+        'status':forms.CheckboxInput(attrs={'class':'form-control'}), 
+       # 'daily_salary': forms.NumberInput(attrs={'class':'form-control'})
+        
+    }  
+    
+
 class ProcurementForm(forms.ModelForm):
     class Meta: 
         model = Procurement
         fields = [ #'receipt_no',
-                  'quantity','item_name', 'procurement_cost'] 
+                  'item_name', 'quantity','procurement_cost'] 
         labels = {
         #'receipt_no': 'Receipt No',   
         'item_name' :'Item_name',   
@@ -121,3 +143,36 @@ class ProcurementForm(forms.ModelForm):
         'procurement_cost':forms.NumberInput(attrs={'class':'form-control'}), 
     }     
    
+
+class DollForm(forms.ModelForm):
+    class Meta:
+        model = Doll
+        fields = ['doll_name', 'price', 'quantity']
+        labels = {
+            'doll_name': 'Doll Name',
+            'price': 'Price',
+            'quantity': 'Quantity'
+        }
+        widgets = {
+            'doll_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+
+class TransactionForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['buyer', 'doll', 'quantity']
+        labels = {
+            'buyer': 'Buyer',
+            'doll': 'Doll',
+            'quantity': 'Quantity',
+            
+        }
+        widgets = {
+            'buyer': forms.Select(attrs={'class': 'form-select'}),
+            'doll': forms.Select(attrs={'class': 'form-select'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            
+        }

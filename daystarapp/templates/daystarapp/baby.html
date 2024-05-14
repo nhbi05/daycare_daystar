@@ -1,109 +1,77 @@
 {% extends 'daystarapp/base.html' %}
 {% load static %}
 {% block body %}
-<div class="container-fluid"> 
-    <h3 class="m-4">All Babies</h3>
-    <div class="float-right">
+<div class="container-fluid">
+  <div class="row">
+        <h2 class="text-center m-4">All Babies</h2>
+    <div class="col-md-6"> <!-- Right side -->
       <a href="{% url "baby_reg" %}" class="btn btn-primary m-">Add baby</a>
     </div>
-     <div class="row">
-        <div class="col-12">
-            {% if babies %}
-            <div class="card border-primary mb-4 ms-4 me-4">
-                <div class="card-header">Baby Records</div>
-                <div class="card-body">
+  </div>
+  <hr>
+  <div class="row">
+      {% for baby in babies %}
+      <div class="col-md-4 mb-4">
+          <div class="card">
+              <div class="card-header">Baby {{ baby.id }}</div>
+              <div class="card-body">
+                  <img src="{% static '/IMG/daycare12.jpg' %}" class="rounded-circle" alt="Baby Image" style="width: 100px; height: 100px; object-fit: cover;">
+                  <h5 class="card-title">{{ baby.b_firstname }} {{ baby.b_lastname }}</h5>
                   <p class="card-text">
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-hover">
-                        <thead>
-                          <tr>                                 
-                            <th>Baby No_</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Gender</th>
-                            <th>Age</th>
-                            <th>Location</th>
-                            <th>Parents name</th>
-                            <th>Time Spent</th>
-                            <th>Dropped by</th>
-                            <th>Picked by</th>
-                            <th>TimeIn</th>
-                            <th>TimeOut</th>
-                            <th >View </th>
-                          </tr>
-                        </thead>
-                        <tbody> 
-                            {% for baby in babies %}
-                                <tr class="table-primary">
-                                  <td >{{ baby.id }}</td>
-                                  <td >{{ baby.b_firstname }}</td>
-                                  <td >{{ baby.b_lastname }}</td>
-                                  <td >{{ baby.b_gender }}</td>
-                                  <td >{{ baby.b_age }}</td>
-                                  <td >{{ baby.b_location }}</td>
-                                  <td >{{ baby.b_parentsname }}</td>
-                                  <td >{{ baby.periodofstay }}</td>
-                                  <td >{{ baby.b_broughtby }}</td>
-                                  <td >{{ baby.b_pickedby }}</td>
-                                  <td >{{ baby.timein }}</td>
-                                  <td >{{ baby.timeout }}</td>
-                                  <td>
-                                    <button type="button" class=" btn btn-success me-1" href="{% url 'view_baby' baby.id %}"data-bs-toggle="modal"data-bs-target="#myModal{{baby.id}}">
-                                      <i class="fa-solid fa-circle-info fa-lg"></i>
-                                    </button>
-                                    <!--Modal component-->
-                                    <div class="modal"id="myModal{{baby.id}}"tabindex="-1" aria-labelledby="myModalLabel1"aria-hidden="true">
-                                      <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <h5 class="modal-title">
-                                              Baby {{ baby.first_name }} {{ baby.last_name }}
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                              <span aria-hidden="true"></span>
-                                            </button>
-                                          </div>
-                                          <div class="modal-body">
-                                            <ul class="list-unstyled">
-                                              <li>Baby Number: <strong>Baby:{{baby.id}}</strong></li>
-                                              <li>First Name: <strong>{{baby.b_firstname}}</strong></li>
-                                              <li>Last Name: <strong>{{baby.b_lastname}}</strong></li>
-                                              <li>Gender: <strong>{{baby.b_gender}}</strong></li>
-                                              <li>Age: <strong> {{baby.b_age}}</strong></li>
-                                              <li>TimeIn: <strong>{{baby.timein}}</strong></li>
-                                              <li>TimeOut: <strong>{{baby.timeout}}</strong></li>
-                                              <li>Pickedby: <strong>{{baby.b_pickedby}}</strong></li>
-                                              <li>Droppedby: <strong>{{baby.b_broughtby}}</strong></li>
-                                              <li>Parents Name: <strong>{{baby.b_parentsname}}</strong></li>
-                                            </ul>
-                                          </div>
-                                          <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <a class="btn btn-warning me-1" href="{% url 'b_edit' baby.id %}">
-                                              <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                            </a>  
-                                            <a class="btn btn-danger me-1" href="{% url 'delete_baby' baby.id %}">
-                                              <i class="fa-solid fa-trash fa-lg"></i>
-                                            </a>
-                                          </td>
-                                              
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    </div>
+                      <strong>Gender:</strong> {{ baby.b_gender }}<br>
+                      <strong>Age:</strong> {{ baby.b_age }}<br>
+                      <strong>Location:</strong> {{ baby.b_location }}<br>
+                      <strong>Parents Name:</strong> {{ baby.b_parentsname }}<br>
+                      <strong>Time Spent:</strong> {{ baby.periodofstay }}<br>
+                      <strong>Dropped by:</strong> {{ baby.b_broughtby }}<br>
+                      <strong>Picked by:</strong> {{ baby.b_pickedby }}<br>
+                      <strong>TimeIn:</strong> {{ baby.timein }}<br>
+                      <strong>TimeOut:</strong> {{ baby.timeout }}<br>
                   </p>
-                </div>
-            </div>  
-            {% else %}
-            <h5 class="alert alert-primary ms-4 me-4">No Baby Records</h5>
-            {% endif %}
-        </div>
-     </div>
+                  <a href="{% url 'view_baby' baby.id %}" class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#myModal{{ baby.id }}">
+                      View Details
+                  </a>
+                  <!-- Modal -->
+                  <div class="modal fade" id="myModal{{ baby.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{ baby.id }}" aria-hidden="true">
+                      <!-- Modal content-->
+                         <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="myModalLabel{{ baby.id }}">Baby Details</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <ul class="list-unstyled">
+                                  <li><strong>Baby Number:</strong> {{ baby.id }}</li>
+                                  <li><strong>First Name:</strong> {{ baby.b_firstname }}</li>
+                                  <li><strong>Last Name:</strong> {{ baby.b_lastname }}</li>
+                                  <li><strong>Gender:</strong> {{ baby.b_gender }}</li>
+                                  <li><strong>Age:</strong> {{ baby.b_age }}</li>
+                                  <li><strong>Location:</strong> {{ baby.b_location }}</li>
+                                  <li><strong>Parents Name:</strong> {{ baby.b_parentsname }}</li>
+                                  <li><strong>Time Spent:</strong> {{ baby.periodofstay }}</li>
+                                  <li><strong>Dropped by:</strong> {{ baby.b_broughtby }}</li>
+                                  <li><strong>Picked by:</strong> {{ baby.b_pickedby }}</li>
+                                  <li><strong>TimeIn:</strong> {{ baby.timein }}</li>
+                                  <li><strong>TimeOut:</strong> {{ baby.timeout }}</li>
+                              </ul>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a href="{% url 'b_edit' baby.id %}" class="btn btn-warning me-1">
+                                  <i class="fa-solid fa-pen-to-square fa-lg"></i> Edit
+                              </a>
+                              <a href="{% url 'baby_delete' baby.id %}" class="btn btn-danger me-1">
+                                  <i class="fa-solid fa-trash fa-lg"></i> Delete
+                              </a>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
 </div>
-
 {% endblock %}

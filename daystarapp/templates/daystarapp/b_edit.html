@@ -19,7 +19,7 @@
                         <form action="{% url 'b_edit' baby.id %}" method="POST">
                             {% csrf_token %}
                             {{ form2|crispy }}
-                            <button type="submit"class="btn btn-primary">Add</button>
+                            <button type="submit"class="btn btn-primary">Update</button>
                             <a href="{% url 'baby' %}"class="btn btn-secondary">Cancel</a>
 
                         </form>

@@ -1,0 +1,21 @@
+{% extends "daystarapp/base.html" %}
+{% block body %}
+    <h3 class="text-center m-4">Confirm Deletion</h3>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <i class="fa-solid fa-trash fa-lg"></i> Confirm Deletion
+                </div>
+                <div class="card-body">
+                    <p>Are you sure you want to delete the doll "{{ doll.doll_name }}"?</p>
+                    <form action="{% url 'doll_delete' doll.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                        <a href="{% url 'dolls' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

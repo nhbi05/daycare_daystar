@@ -1,0 +1,53 @@
+{% extends "daystarapp/base.html" %}
+{% load static %}
+{% block body %}
+<h3 class="text-center m-4">Procurement Page  </h3> <hr>
+<div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="card shadow">
+          <img src="{% static 'IMG/daycare12.jpg' %}" class="card-img-top" alt="Placeholder Image">
+          <div class="card-body">
+            <h5 class="card-title">ITEMS</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Support card subtitle</h6>
+            <p class="card-text">This contains all the daycares items in the inventory.</p>
+            <a href="/procurement/" class="card-link">All Items</a>
+          </div>
+          <div class="card-footer text-muted">
+            2 days ago
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card shadow">
+            <img src="{% static 'IMG/preschooler.jpg' %}" class="card-img-top" alt="Placeholder Image">
+         
+          <div class="card-body">
+            <h5 class="card-title">DOLLS</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Support card subtitle</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="/dolls/" class="card-link">Card link</a>
+          </div>
+          <div class="card-footer text-muted">
+            2 days ago
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card shadow">
+          <img src="{% static 'IMG/preschooler.jpg' %}" class="card-img-top" alt="Placeholder Image">
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Support card subtitle</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="card-link">Card link</a>
+          </div>
+          <div class="card-footer text-muted">
+            2 days ago
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}

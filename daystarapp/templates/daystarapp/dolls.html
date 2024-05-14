@@ -1,0 +1,65 @@
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+        <h2 class="text-center m-4">All Dolls</h2>
+    <div class="col-md-6"> <!-- Right side -->
+      <a href="{% url 'create_doll' %}" class="btn btn-primary m-">Add Doll</a>
+    </div>
+    
+  </div>
+  <hr>
+  <div class="row">
+      {% for doll in dolls %}
+      <div class="col-md-4 mb-4">
+          <div class="card">
+              <div class="card-header">Doll {{ doll.id }}</div>
+              <div class="card-body text-center">
+                  <!-- Apply the 'rounded-circle' class to the img tag -->
+                  <img src="{% static '/IMG/PANDA.jpg' %}{{ doll.image }}" class="rounded-circle" alt="{{ doll.doll_name }}" style="width: 150px; height: 150px; object-fit: cover;">
+                  <h5 class="card-title">{{ doll.doll_name }}</h5>
+                  <p class="card-text">
+                      <strong>Price:</strong> UGX{{ doll.price }}<br>
+                      <strong>Quantity:</strong> {{ doll.quantity }}<br>
+                  </p>
+                  <a href="{% url 'view_doll' doll.id %}" class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#myModal{{ doll.id }}">
+                      View Details
+                  </a>
+                  <a href="{% url 'make_transaction'  %}" class="btn btn-success">Purchase</a>
+                  <!-- Modal -->
+                  <div class="modal fade" id="myModal{{ doll.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{ doll.id }}" aria-hidden="true">
+                      <!-- Modal content -->
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="myModalLabel{{ doll.id }}">Doll Details</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <ul class="list-unstyled">
+                                  <li><strong>Doll Number:</strong> {{ doll.id }}</li>
+                                  <li><strong>Name:</strong> {{ doll.doll_name }}</li>
+                                  <li><strong>Price:</strong> UGX{{ doll.price }}</li>
+                                  <li><strong>Quantity:</strong> {{ doll.quantity }}</li>
+                              </ul>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a href="{% url 'doll_update' doll.id %}" class="btn btn-warning me-1">
+                                  <i class="fa-solid fa-pen-to-square fa-lg"></i> Edit
+                              </a>
+                              <a href="{% url 'doll_delete' doll.id %}" class="btn btn-danger me-1">
+                                  <i class="fa-solid fa-trash fa-lg"></i> Delete
+                              </a>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}

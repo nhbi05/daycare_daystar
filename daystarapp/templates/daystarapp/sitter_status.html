@@ -1,0 +1,52 @@
+{% extends "daystarapp/base.html" %}
+{% load static %}
+{% block body %}
+    <div class="container">
+        <h1 class="text-lg font-bold p-4">Welcome to the Sitter List</h1>
+        <div class="p-4">
+            <a href="/s_paymentadd/" class="btn btn-primary rounded-lg shadow-lg">Add Sitter</a>
+        </div>
+        <hr>
+        <div class="p-4">
+            <h2 class="font-bold">All Sitters</h2>
+            <table class="table table-bordered table-hover shadow-lg mt-4">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>#</th>
+                        <th>Sitter Name</th>
+                        <th>Babies Assigned</th>
+                        <th>Date</th>
+                        <th>Status </th>
+                        <th>Daily Salary </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sitter in payment_sitter %}
+                        <tr class="table-primary">
+                            <td>{{ sitter.id }}</td>
+                            <td>{{ sitter.sitter_name }}</td>
+                            <td>
+                                {% for baby in sitter.babies_assigned.all %}
+                                    {{ baby.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ sitter.paid_on }}</td>
+                            <td>
+                                {% if sitter.status == 0 %}
+                                    <span class="text-warning">Off duty</span>
+                                {% else %}
+                                    <span class="text-success">Active</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ sitter.payment_amount }}</td>
+                            <td>
+                                <a href="/sitter_status/{{ sitter.id }}" class="text-primary">Read</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

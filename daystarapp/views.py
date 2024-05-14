@@ -4,41 +4,61 @@ from .forms import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import auth
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from django.http import HttpResponse
+from django.template import loader
 # Create your views here.
-#def index(request):
-    #return render (request, 'daystarapp/index.html')
+
 def landing_page (request):
     return render (request, 'daystarapp/landingpage.html')
 
 #Register the user
-def register(request):
+#def register(request):
     form3 = CreateUserForm()
-    if request.method =="POST":
+    if request.method == "POST":
         form3 = CreateUserForm(request.POST)
         if form3.is_valid():
             form3.save()
             return redirect('login')
-    context = {'form3':form3}
-    return render(request, 'daystarapp/register.html',context=context)        
+    context = {'form3': form3}
+    return render(request, 'daystarapp/register.html', context=context)        
 
-#- login a user
-def login(request):
-    form4 = LoginForm()
-    if request.method =="POST":
-        form4 = LoginForm(request, data=request.POST) 
-        if form4.is_valid():
-            username = request.POST.get('username')
-            password = request.POST.get('password')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            # Optionally, you can log in the user after registration
+            # login(request, user)
+            return redirect('login')  # Redirect to login page after successful registration
+    else:
+        form = CreateUserForm()
+    return render(request, 'daystarapp/register.html', {'form3': form})
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                auth.login(request, user)
+                login(request, user)
+                # Redirect to a success page.
                 return redirect('index')
-    return render(request, 'daystarapp/login.html', {
-        'form4':form4,
+            else:
+                # Return an 'invalid login' error message.
+                # You might want to handle this in a different way, like displaying an error message in the form.
+                return render(request, 'daystarapp/login.html', {'form': form, 'error_message': 'Invalid username or password.'})
+    else:
+        form = LoginForm()
+    return render(request, 'daystarapp/login.html', {'form': form})
 
-        })     
 
 def user_logout(request):
     auth.logout(request)
@@ -46,7 +66,7 @@ def user_logout(request):
 
          
 
-@login_required(login_url='login')
+@login_required()
 def index(request):
     # stats
     count_babies = Baby.objects.count()
@@ -133,9 +153,14 @@ def babyedit(request, id):
     }) 
 @login_required
 def delete_baby(request, id):
-    Baby.objects.filter(id=id).delete()
-    redirect_url = reverse('baby')
-    return HttpResponseRedirect(redirect_url)
+    baby = Baby.objects.get(id=id)
+
+    if request.method == 'POST':
+        baby.delete()
+        redirect_url = reverse('baby')
+        return HttpResponseRedirect(redirect_url)
+    else:
+        return render(request, 'daystarapp/baby_delete.html', {'baby': baby})
 
 @login_required
 #sitter views
@@ -192,12 +217,15 @@ def addSitter(request):
 def view_sitter(request, id):
     sitter = Sitter.objects.get(id=id)
     return HttpResponseRedirect(reverse('sitter'))
-@login_required
-def delete_sitter(request, id):
-    Sitter.objects.filter(id=id).delete()
-    redirect_url = reverse('sitter')
-    return HttpResponseRedirect(redirect_url)
 
+def delete_sitter(request, id):
+    sitter = Sitter.objects.get(id=id)
+    if request.method == 'POST':
+        sitter.delete()
+        return redirect('sitter')
+    return render(request, 'daystarapp/sitter_delete.html', {'sitter': sitter})
+
+@login_required
 def sitter_edit(request, id):
     sitter = Sitter.objects.get(id=id)
     if request.method == 'POST':
@@ -220,22 +248,16 @@ def sitter_edit(request, id):
 
 
 #Payment views
+@login_required
 def payment(request):
     return render(request, 'daystarapp/payments.html', {
         'payments':Payment.objects.all()
         })
-
+@login_required
 def view_payment(request, id):
     payment = Payment.objects.get(id=id)
     return HttpResponseRedirect(reverse('payments'))
 
-#def payment_list(request):
-    #payments = Payment.objects.all()
-    #return render(request, 'daystaraap/payments.html', {'payments': payments})
-
-#def payment_detail(request, id):
-    #payment = Payment.objects.get(Payment,id=id)
-    #return render(request, 'daystarapp/payments.html', {'payment': payment})
 @login_required
 def create_payment(request):
     if request.method == 'POST':
@@ -288,66 +310,265 @@ def payment_delete(request, id):
     if request.method == 'POST':
         payment.delete()
         return redirect('payments')
-    return render(request, 'payment_confirm_delete.html', {'payment': payment})
+    return render(request, 'daystarapp/payment_delete.html', {'payment': payment})
+
+
+
+
+
+#siter payments
+@login_required
+# Read operation
+def sitter_payment(request):
+    payment_sitter= SitterPayment.objects.all()
+    for payment in payment_sitter :
+        payment.payment_amount = payment.babies_assigned.all().count() * 3000
+    return render(request, 'daystarapp/sitter_status.html', {
+           'payment_sitter' : payment_sitter})
+
+#def view_payment(request, id):
+    #sitter_payment = Payment.objects.get(id=id)
+    #return HttpResponseRedirect(reverse('payments'))
+
+@login_required
+# Update operation
+def update_sitter_payment(request, id):
+    sitter_payment = SitterPayment.objects.get(id=id)
+    if request.method == 'POST':
+        form7 = SitterPaymentForm(request.POST, instance=sitter_payment)
+        if form7.is_valid():
+            form7.save()
+            return render(request, 'daystarapp/edit.html', {
+                'form7': form7,
+                'success': True,
+            })
+    else:
+        form = SitterPaymentForm(instance=sitter_payment)
+    return render(request, 'daystarapp/edit.html', {
+        'form7': form7,
+        'success': False,
+    })
+@login_required
+# Delete operation
+def delete_sitter_payment(request, id):
+    sitter_payment = SitterPayment.objects.get( id=id)
+    sitter_payment.delete()
+    return redirect('sitter_payment_list')  # Redirect to the list view after deletion
+
+@login_required
+def addSitter_status(request):
+    if request.method == 'POST':
+        form7 = SitterPaymentForm(request.POST)
+
+        if form7.is_valid():
+            new_sitter_name = form7.cleaned_data['sitter_name']
+            new_babies_assigned = form7.cleaned_data['babies_assigned']
+            new_status = form7.cleaned_data['status']
+
+            new_sitter_payment = SitterPayment(
+                sitter_name=new_sitter_name,
+                status=new_status,
+            )
+            new_sitter_payment.save()
+            new_sitter_payment.babies_assigned.set(new_babies_assigned)  # Assign babies using set()
+            return render(request, 'daystarapp/s_paymentadd.html', {
+                'form7': SitterPaymentForm(),
+                'success': True,
+            })
+        else:
+            print("Form is not valid")
+            return render(request, 'daystarapp/s_paymentadd.html', {
+                'form7': SitterPaymentForm(),
+                'success': False,
+            })
+    else:
+        form7 = SitterPaymentForm()
+
+    return render(request, 'daystarapp/s_paymentadd.html', {
+        'form7': form7,  # Use the form instance instead of creating a new one
+    })
+
 
 
 
 #procurement views
+@login_required
+def procurement_landingpage(request):
+    return render(request, 'daystarapp/procurementhome.html')
+
+@login_required
 def procurement(request):
-    return render(request, 'daystarapp/payments.html', {
-        'payments':Procurement.objects.all()
+    return render(request, 'daystarapp/procurement.html', {
+        'procurement_items':Procurement.objects.all()
         })
-
-def view_payment(request, id):
-    payment = Payment.objects.get(id=id)
-    return HttpResponseRedirect(reverse('payments'))
-
+@login_required
+def view_procurement(request, id):
+    new_procurement = Procurement.objects.get(id=id)
+    return HttpResponseRedirect(reverse('procurementhome'))
+@login_required
 def create_procurement(request):
     if request.method == 'POST':
-        form5 = ProcurementForm(request.POST)
-        if form5.is_valid():
-            new_item = form5.cleaned_data['item']
-            new_quantity = form5.cleaned_data['quantity']
-            new_procurement_cost = form5.cleaned_data['procurement_cost']
+        form8 = ProcurementForm(request.POST)
+        if form8.is_valid():
+            new_item_name = form8.cleaned_data['item_name']
+            new_quantity = form8.cleaned_data['quantity']
+            new_procurement_cost = form8.cleaned_data['procurement_cost']
 
-            new_payment = Procurement(
-                item = new_item,
+            new_procurement = Procurement(
+                item_name = new_item_name,
                 quantity = new_quantity,
                 procurement_cost= new_procurement_cost,
                     )
-            new_payment.save()
+            new_procurement.save()
             return render(request, 'daystarapp/procurement_reg.html', {
-                'form5': PaymentForm(),
+                'form8': ProcurementForm(),
                 'success': True,
             })
         else:
             print ("Form is not valid")
             return render(request, 'daystarapp/procurement_reg.html', {
-              'form5': ProcurementForm(),
+              'form8': ProcurementForm(),
                'success': False,
             })
     else:
-        form6= ProcurementForm()
+        form8= ProcurementForm()
         return render(request, 'daystarapp/procurement_reg.html', {
-            'form6' : ProcurementForm()
+            'form8' : ProcurementForm()
         }) 
 
 @login_required
-def payment_update(request, id):
+def procurement_update(request, id):
     item = Procurement.objects.get(id=id)
     if request.method == 'POST':
-        form6 = ProcurementForm(request.POST, instance=payment)
-        if form6.is_valid():
-            form6.save()
-            return redirect('procurement', id=id)
+        form8 = ProcurementForm(request.POST, instance=item)
+        if form8.is_valid():
+            form8.save()
+            return render(request, 'daystarapp/procurement_edit.html', {
+                'form8': form8,
+                'success': True,
+            })
     else:
-        form6 =ProcurementForm(instance=payment)
-    return render(request, 'daystarapp/procurement_reg.html', {'form6': form6})
+        form8 = ProcurementForm(instance=item)
+    return render(request, 'daystarapp/procurement_edit.html', {
+        'form8': form8,
+        'success': False,
+    })
 
 @login_required
-def payment_delete(request, id):
-    payment = Procurement.objects.get(id=id)
+def procurement_delete(request, id):
+    item = Procurement.objects.get(id=id)
     if request.method == 'POST':
-        payment.delete()
-        return redirect('p')
-    return render(request, 'payment_confirm_delete.html', {'payment': payment})
+        item.delete()
+        return redirect('procurement')
+    return render(request, 'daystarapp/confirm_delete.html', {'item': item})
+
+
+
+
+#dolls views
+@login_required
+def all_dolls(request):
+    dolls = Doll.objects.all()
+    return render(request, 'daystarapp/dolls.html', {'dolls': dolls})
+
+@login_required
+def create_doll(request):
+    if request.method == 'POST':
+        form9 = DollForm(request.POST)
+        if form9.is_valid():
+            new_doll_name = form9.cleaned_data['doll_name']
+            new_quantity = form9.cleaned_data['quantity']
+            new_price = form9.cleaned_data['price']
+
+            new_doll = Doll(
+                doll_name = new_doll_name,
+                quantity = new_quantity,
+                price= new_price,
+                    )
+            new_doll.save()
+            return render(request, 'daystarapp/doll_reg.html', {
+                'form9': DollForm(),
+                'success': True,
+            })
+        else:
+            print ("Form is not valid")
+            return render(request, 'daystarapp/doll_reg.html', {
+              'form9': DollForm(),
+               'success': False,
+            })
+    else:
+        form9= DollForm()
+        return render(request, 'daystarapp/doll_reg.html', {
+            'form9' : DollForm()
+        }) 
+    
+@login_required
+def view_doll(request,id):
+    doll = Doll.objects.get(id=id)
+    return render(request, 'view_doll.html', {'doll': doll})
+
+
+@login_required
+def update_doll(request, id):
+    doll = Doll.objects.get(id=id)
+    if request.method == 'POST':
+        form_doll = DollForm(request.POST, instance=doll)
+        if form_doll.is_valid():
+            form_doll.save()
+            return redirect('dolls')  # Redirect to view doll page after successful update
+    else:
+        form_doll = DollForm(instance=doll)
+    return render(request, 'daystarapp/doll_update.html', {
+        'form_doll': form_doll,
+        'doll': doll,
+    })
+
+@login_required
+def delete_doll(request, id):
+    doll = Doll.objects.get(id=id)
+    if request.method == 'POST':
+        doll.delete()
+        return redirect('dolls')
+    return render(request, 'daystarapp/doll_delete.html', {'doll': doll})
+
+
+#Doll Transaction
+
+def make_transaction(request):
+    if request.method == 'POST':
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            transaction = form.save()
+            return redirect('transaction_list')
+        else:
+            print("form is invalid")
+    else:
+        form = TransactionForm()
+    return render(request, 'daystarapp/make_transaction.html', {'form': form})
+
+
+
+
+
+def transaction_detail(request, pk):
+    transaction = Transaction.objects.get(pk=pk)
+    return render(request, 'daystarapp/transaction_detail.html', {'transaction': transaction})
+
+def transaction_list(request):
+    transactions = Transaction.objects.all()
+    return render(request, 'daystarapp/transaction_list.html', {'transactions': transactions})
+
+
+def receipt(request, transaction_id):
+    transaction = Transaction.objects.get(pk=transaction_id)
+    return render(request, 'receipt.html', {'transaction': transaction})
+
+
+def transactions(request):
+    transactions = Transaction.objects.all()
+    return render(request, 'daystarapp/transactions.html', {'transactions': transactions})
+
+
+
+
+

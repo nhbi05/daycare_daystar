@@ -45,7 +45,7 @@ class Sitter(models.Model):
     s_contact = models.CharField(max_length=100)
 
     def __str__(self):
-        return f'Baby:{self.s_firstname}{self.s_lastname}'    
+        return f'Sitter {self.s_firstname}{self.s_lastname}'    
    
 class Payment(models.Model):
     payment_name = models.ForeignKey(Baby, on_delete=models.CASCADE, null=True, blank=True)
@@ -74,10 +74,10 @@ class Payment(models.Model):
     
 class SitterPayment(models.Model):
     sitter_name = models.ForeignKey(Sitter, on_delete=models.CASCADE)
-    babies_assigned = models.ForeignKey(Baby, on_delete=models.CASCADE, null=True, blank=True)
-    status = models.CharField(max_length=100)
-    daily_salary=models.FloatField()
-    paid_on = models.DateTimeField()
+    babies_assigned = models.ManyToManyField(Baby)
+    status = models.BooleanField(max_length=100)
+    #daily_salary=models.FloatField()
+    paid_on = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'Payment for {self.sitter_name}  on {self.paid_on}'
     
@@ -95,4 +95,32 @@ class Procurement(models.Model):
      
 
 
-    
+
+class Doll(models.Model):
+    doll_name = models.CharField(max_length=100)
+    price = models.FloatField()
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return self.doll_name
+
+
+class Transaction(models.Model):
+    buyer = models.ForeignKey('Baby', on_delete=models.CASCADE)
+    doll = models.ForeignKey('Doll', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Default value set to 0
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # Calculate total amount based on doll price and quantity
+        self.total_amount = self.doll.price * self.quantity
+        super().save(*args, **kwargs)
+        
+        # Reduce doll quantity after transaction
+        self.doll.quantity -= self.quantity
+        self.doll.save()
+
+    def __str__(self):
+        return f"Transaction {self.id}: {self.buyer} bought {self.quantity} {self.doll}"
+

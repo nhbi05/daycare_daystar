@@ -1,0 +1,20 @@
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="receipt">
+                <h2 class="text-center">Receipt</h2>
+                <hr>
+                <div class="receipt-details">
+                    <p><strong>Doll Name:</strong> {{ transaction.doll.name }}</p>
+                    <p><strong>Quantity Purchased:</strong> {{ transaction.quantity_purchased }}</p>
+                    <p><strong>Buyer:</strong> {{ transaction.buyer.name }}</p>
+                    <!-- Add more details here as needed -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

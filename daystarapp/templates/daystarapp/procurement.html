@@ -1,0 +1,60 @@
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+{% block body %}
+<div class="modal-footer">
+    <div class="container-fluid">
+        <h3 class="m-4">All Items</h3>
+        <div class="row">
+            {% for item in procurement_items %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                    <div class="card-header">ID No: {{ item.id }}</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.item_name }} </h5>
+                        <p class="card-text">
+                            Quantity: {{ item.quantity }}<br>
+                            Procured On: {{ item.procurement_date }}<br>
+                            Cost: {{ item.procurement_cost }}<br>
+                        </p>
+                        <div class="text-center">
+                            <a href="{% url 'procurement_view' item.id %}" class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#myModal{{ item.id }}">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{ item.item_name }} </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Item No: {{ item.id }}<br>
+                                Item: {{ item.item_name }}<br>
+                                Peocured On: {{ item.procurement_date }}<br>
+                                Cost: {{ item.procurement_cost }}<br>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'procurement_edit' item.id %}" class="btn btn-warning me-1">
+                                <i class="fa-solid fa-pen-to-square fa-lg"></i> Edit
+                            </a>
+                            <a href="{% url 'confirm_delete' item.id %}" class="btn btn-danger">
+                                <i class="fa-solid fa-trash fa-lg"></i> Delete
+                            </a>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

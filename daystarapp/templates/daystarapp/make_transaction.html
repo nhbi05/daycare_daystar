@@ -1,0 +1,28 @@
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center">Make Transaction</h2>
+            <form action="{% url "make_transaction" %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_doll">Doll:</label>
+                    {{ form.doll }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_quantity">Quantity:</label>
+                    {{ form.quantity }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_buyer">Buyer:</label>
+                    {{ form.buyer }}
+                </div>
+                <button type="submit" class="btn btn-primary">Make Transaction</button>
+            </form>
+            <a href="{% url 'transaction_list' %}" class="btn btn-secondary mt-3">All Transactions</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

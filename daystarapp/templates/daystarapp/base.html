@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DayStar</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min (3).css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
 </head>
 <!--{% if user.is_authenticated %}-->
@@ -14,7 +14,7 @@
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
             <img src="{% static 'IMG/logo.png' %}" alt="" width="60px" height="60px">  
-          <a class="navbar-brand" href="">DAYSTAR DAYCARE</a>
+          <a class="navbar-brand"style="font-family: 'Georgia', sans-serif;" href="">DAYSTAR DAYCARE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -33,13 +33,20 @@
                 <a class="nav-link" href="/sitter/">
                   Sitters</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/payments/">
-                  <i class="fa-regular fa-credit-card fa-lg"></i>Payment</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Payments</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/sitter_status/">Sitter Payment</a>
+                  <a class="dropdown-item" href="/payments/">Baby Payment</a>
+                </div>
               </li>
               <li class="nav-item"> 
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="/procurementhome/">
                   <i class="fa-solid fa-cart-shopping fa-lg"></i>Procurement</a>
+              </li>
+              <li class="nav-item"> 
+                <a class="nav-link" href="/logout/">
+                  <i class="fa-solid fa-cart-shopping fa-lg"></i>Logout</a>
               </li>
             </ul>
             <form class="d-flex">

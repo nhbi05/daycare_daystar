@@ -1,24 +1,27 @@
-{% extends "daystarapp/base.html" %}
-{% load crispy_forms_tags %}
+{% extends 'daystarapp/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block body %}
-    <h3 class="text-center m-4">Add Sitter</h3><hr>
+
+<!--{% block title %} Add Task {% endblock %}-->
+
+<h3 class="text-center m-4">Assign Baby to Sitter</h3>
     {% if success %}
         <div class = "alert alert-success" role="alert">
-            The New Sitter been added successfully.
-            <a href="{% url 'sitter' %}" class="alert-link">Go to Sitters' Page.</a>
+            The New Baby been assigned successfully.
+            <a href="{% url 'sitter_status' %}" class="alert-link">Go to Sitter_status Page.</a>
         </div>
     {% else %}
         <div class="row justify-content-center">
             <div class="col-6">
                 <div class="card border-light mb-3">
                     <div class="card-header">
-                        <i class="fa-solid fa-address-card fa-lg"></i>Sitter Registration
+                        <i class="fa-solid fa-address-card fa-lg"></i>Baby Assignment
                     </div>
                     <div class="card-body">
-                        <form action="{% url 'sitter_reg' %}" method="POST">
+                        <form action="{% url 's_paymentadd' %}" method="POST">
                             {% csrf_token %}
-                            {{ form1|crispy }}
+                            {{ form7|crispy }}
                             <button type="submit"class="btn btn-primary">Add</button>
                             <a href="{% url 'index' %}"class="btn btn-secondary">Cancel</a>
 

@@ -1,0 +1,30 @@
+{% extends "daystarapp/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block body %}
+    <h3 class="text-center m-4">Add Doll</h3> <hr>
+    {% if success %}
+        <div class="alert alert-success" role="alert">
+            The new doll has been added successfully.
+            <a href="{% url 'dolls' %}" class="alert-link">Go to All Dolls Page.</a>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card border-light mb-3">
+                    <div class="card-header">
+                        <i class="fa-solid fa-doll fa-lg"></i> Doll Registration
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'create_doll' %}" method="POST">
+                            {% csrf_token %}
+                            {{ form9|crispy }}
+                            <button type="submit" class="btn btn-primary">Add</button>
+                            <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>   
+            </div>
+        </div>  
+    {% endif %}  
+{% endblock %}
