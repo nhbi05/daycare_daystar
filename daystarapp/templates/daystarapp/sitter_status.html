@@ -27,9 +27,11 @@
                             <td>{{ sitter.id }}</td>
                             <td>{{ sitter.sitter_name }}</td>
                             <td>
+                            <ul>
                                 {% for baby in sitter.babies_assigned.all %}
-                                    {{ baby.name }}{% if not forloop.last %}, {% endif %}
+                                    <li>{{ baby.b_lastname }} {{ baby.b_firstname }}</li>
                                 {% endfor %}
+                            </ul>
                             </td>
                             <td>{{ sitter.paid_on }}</td>
                             <td>
@@ -41,7 +43,7 @@
                             </td>
                             <td>{{ sitter.payment_amount }}</td>
                             <td>
-                                <a href="/sitter_status/{{ sitter.id }}" class="text-primary">Read</a>
+                                <a href="{% url 'view_sitter_payment' sitter.id %}" class="text-primary">Read</a>
                             </td>
                         </tr>
                     {% endfor %}

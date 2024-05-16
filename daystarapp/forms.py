@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
+from django.forms.fields import DateField
+from django.contrib.admin.widgets import AdminDateWidget
 
 #register or create a user
 
@@ -25,30 +27,71 @@ class LoginForm(AuthenticationForm):
 class BabyForm(forms.ModelForm):
     class Meta:
         model = Baby
-        fields = [ 'b_firstname', 'b_lastname','b_age','b_gender','b_parentsname','b_broughtby','b_pickedby','periodofstay','b_location']
+        fields = [ 'b_firstname', 'b_lastname','b_age','b_gender','b_fathers_name','b_location','b_mothers_name','b_DOB']
         labels = { 
             'b_firstname': 'First Name', 
             'b_lastname': 'Last Name',
             'b_age': 'Age',
             'b_gender':'Gender',
-            'b_parentsname':'Parents Name',
-            'b_broughtby': 'Brought by',
-            'b_pickedby': 'Picked by',
-            'periodofstay': 'Period of Stay',
+            'b_fathers_name':'Fathers Name',
+            'b_mothers_name':'Moms Name',
             'b_location': 'Location',
+            'b_DOB': 'Date of Birth',
             }
     widgets = {
-        'b_firstname':forms.TextInput(attrs={'class':'form-control'}), 
+        'b_firstname':forms.TextInput(attrs={'placeholder': 'Name'}), 
         'b_lastname':forms.TextInput(attrs={'class':'form-control'}), 
         'b_age':forms.NumberInput(attrs={'class':'form-control'}), 
         'b_gender':forms.TextInput(attrs={'class':'form-control'}), 
-        'b_parentsname':forms.TextInput(attrs={'class':'form-control'}), 
-        'b_broughtby':forms.TextInput(attrs={'class':'form-control'}), 
-        'b_pickedby':forms.TextInput(attrs={'class':'form-control'}), 
-        'periodofstay':forms.TextInput(attrs={'class':'form-control'}),
+        'b_fathers_name':forms.TextInput(attrs={'class':'form-control'}), 
+        'b_mothers_name':forms.TextInput(attrs={'class':'form-control'}), 
         'b_location':forms.TextInput(attrs={'class':'form-control'}), 
+        'b_DOB' :forms.DateField(widget=forms.DateInput(attrs={'type':'date','placeholder': 'Search'}))
+
+    }
+
+
+class BabyCheckinForm(forms.ModelForm):
+    class Meta:
+        model = BabyCheckin
+        fields = [ 'baby_name', 'broughtby','timeIn']
+        labels = { 
+            'baby_name': 'Baby Name', 
+            'broughtby': 'Brought By',
+            'timeIn': 'Time In',
+            
+            }
+    widgets = {
+        'baby_name':forms.Select(attrs={'class':'form-control'}), 
+        'broughtby':forms.TextInput(attrs={'class':'form-control'}), 
+        'timeIn' :forms.DateField(widget=forms.DateInput(attrs={'type':'date','placeholder': 'Search'}))
         
     }
+
+class BabyCheckoutForm(forms.ModelForm):
+    class Meta:
+        model = BabyCheckout
+        fields = [ 'baby_name', 'picked_by','timeOut','comment']
+        labels = { 
+            'baby_name': 'Baby Name', 
+            'picked_by': 'Picked By',
+            'timeOut': 'Time Out',
+            'comment' : 'comment'
+            }
+    widgets = {
+        'baby_name':forms.Select(attrs={'class':'form-control'}), 
+        'picked_by':forms.TextInput(attrs={'class':'form-control'}), 
+        'comment':forms.TextInput(attrs={'class':'form-control'}), 
+        'timeOut' :forms.DateField(widget=forms.DateInput(attrs={'type':'date','placeholder': 'Search'}))
+        
+    }    
+
+
+
+
+
+
+
 
 class SitterForm(forms.ModelForm):
     class Meta:

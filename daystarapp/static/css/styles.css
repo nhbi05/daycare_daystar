@@ -1,11 +1,13 @@
 .form-layout{
     border-radius: 50px;
-    width: 500px;
+    width: 400px;
+    
 }
-.pink-background {
-    background-color: lightpink;
-}
+
 .custom-table {
     background-color: rgba(0, 0, 0, 0.2);
 }
-/* st
+
+.icon-color{
+    color: black;
+}

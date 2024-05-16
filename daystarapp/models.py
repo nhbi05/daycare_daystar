@@ -13,16 +13,32 @@ class Baby(models.Model):
     b_lastname = models.CharField(max_length=100)
     b_gender = models.CharField(max_length=100)
     b_age = models.PositiveIntegerField()
+    b_DOB = models.DateTimeField()
     b_location = models.CharField(max_length=100)
-    b_parentsname = models.CharField(max_length=100)
-    b_broughtby = models.CharField(max_length=100)
-    b_pickedby = models.CharField(max_length=100)
-    periodofstay= models.CharField(max_length=100)
-    timein = models.DateTimeField(auto_now_add=True)
-    timeout = models.DateTimeField(auto_now_add=True)
+    b_fathers_name = models.CharField(max_length=100)
+    b_mothers_name = models.CharField(max_length=100)
+    
 
     def __str__(self):
         return f'Baby:{self.b_firstname}{self.b_lastname}'
+    
+class BabyCheckin(models.Model):
+    baby_name = models.ForeignKey(Baby, on_delete=models.CASCADE, null=True, blank=True)
+    broughtby = models.CharField(max_length=100)
+    timeIn = models.DateTimeField()    
+
+class BabyCheckout(models.Model):
+    PERIOD_OF_STAYS = (
+        ('HALF_DAY', 'HALF_DAY'),
+        ('FULL_DAY', 'FULL_DAY'),
+    )
+    baby_name = models.ForeignKey(Baby, on_delete=models.CASCADE, null=True, blank=True)
+    picked_by = models.CharField(max_length=100)
+    timeOut = models.DateTimeField() 
+    period_of_stay = models.CharField(max_length=100, choices=PERIOD_OF_STAYS) 
+    comment = models.CharField(max_length=100 , null=True, blank=True)  
+
+
 
 class Sitter_id(models.Model):
     name = models.CharField(max_length=100)
@@ -32,10 +48,18 @@ class Sitter_id(models.Model):
 
     
 class Sitter(models.Model):
+    RELIGION = (
+        ('ISLAM', 'ISLAM'),
+        ('CHRISTIANITY', 'CHRISTIANITY'),
+    )
+    S_GENDERS = (
+        ('MALE', 'MALE'),
+        ('FEMALE', 'FEMALE'),
+    )
     sitter_no = models.ForeignKey(Sitter_id, on_delete=models.CASCADE, null=True, blank=True)
     s_firstname = models.CharField(max_length=100)
     s_lastname = models.CharField(max_length=100)
-    s_gender = models.CharField(max_length=100)
+    s_gender = models.CharField(max_length=100, choices= S_GENDERS )
     s_age = models.PositiveIntegerField()
     s_location = models.CharField(max_length=100, default="Kabalagala")
     s_nextofkin = models.CharField(max_length=100)
@@ -43,6 +67,7 @@ class Sitter(models.Model):
     s_recommendersname= models.CharField(max_length=100)
     s_educationlevel = models.CharField(max_length=100)
     s_contact = models.CharField(max_length=100)
+    s_religion = models.CharField(max_length=100, choices=RELIGION)
 
     def __str__(self):
         return f'Sitter {self.s_firstname}{self.s_lastname}'    
@@ -76,7 +101,6 @@ class SitterPayment(models.Model):
     sitter_name = models.ForeignKey(Sitter, on_delete=models.CASCADE)
     babies_assigned = models.ManyToManyField(Baby)
     status = models.BooleanField(max_length=100)
-    #daily_salary=models.FloatField()
     paid_on = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'Payment for {self.sitter_name}  on {self.paid_on}'

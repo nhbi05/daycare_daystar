@@ -2,6 +2,14 @@
 {% load static %}
 
 {% block body %}
+<div class="container-fluid">
+    <div class="row">
+          <h2 class="text-center m-4">All Payments</h2>
+      <div class="col-md-6"> <!-- Right side -->
+        <a href="{% url "payment_reg" %}" class="btn btn-primary m-">Add Payment</a>
+      </div>
+    </div>
+    <hr>
 <div class="container-fluid"> 
     <h3 class="m-4">All Payments</h3>
     <div class="row">
@@ -59,9 +67,7 @@
                                                             <li>Amount Paid: <strong>{{payment.amount }}</strong></li>
                                                             <li>Payment Date: <strong>{{payment.payment_date}}</strong></li>
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <a class="btn btn-warning me-1" href="{% url 'update_payment' payment.id %}">
-                                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
-                                                        </a>  
+                                                        
                                                         <a class="btn btn-danger me-1" href="{% url 'delete_payment' payment.id %}">
                                                             <i class="fa-solid fa-trash fa-lg"></i>
                                                         </a> 

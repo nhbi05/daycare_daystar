@@ -1,83 +1,77 @@
-<!--This is the home page-->
 {% extends 'daystarapp/base.html' %}
 {% load static %}
 {% block body %}
 
 <div class="container">
     <div class="row justify-content-center">
-      <!--<div class="col-md-6" style="
-      width: 100px;">
-      <div width="300px" height="100px">
-        <img class="card-img-top" src="{% static 'IMG/logo2.png' %}" alt="" height="100" width="100">
-      </div>-->
     </div>
-  </div>
-  <h1 class="text-center mb-5" style="font-family: 'Georgia', serif;">Welcome to DayStar_Daycare</h1>
-  <div class="container">
+</div>
+<h1 class="text-center mb-5" style="font-family: 'Georgia', serif; ">Welcome to DayStar_Daycare</h1>
+<div class="container">
     <div class="row">
-      <div class="col-md-4 mb-3">
-        <div class="card shadow rounded" style="background-color: #87CEEB;">
-          <div class="card-body">
-            <i class="fas fa-baby fa-3x"></i>
-            <h5 class="card-title">Babies Admitted</h5>
-            <p class="card-text">View and manage information about admitted babies.</p>
-            <a href="#" class="btn btn-primary">View Details</a>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow rounded" style="background-image: url('{% static 'IMG/daycare12.jpg' %}'); background-size: cover; background-position: center;">
+                <div class="card-body">
+                    <i class="fas fa-baby fa-3x"></i>
+                    <h5 class="card-title" style="color: white;">Babies Admitted</h5>
+                    <p class="card-text" style="color: white;">View and manage information about admitted babies.</p>
+                    <a href="/baby/" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
           </div>
+  
+        <div class="col-md-4 mb-3">
+            <div class="card shadow rounded" style="background-image: url('{% static 'IMG/sitter.jpg' %}'); background-size: cover; background-position: center;">
+                <div class="card-body">
+                    <i class="fas fa-user-nurse fa-3x icon-color" ></i>
+                    <h5 class="card-title" style="color: white;">Sitters Employed</h5>
+                    <p class="card-text" style="color: white;">View and manage information about employed sitters.</p>
+                    <a href="/sitter/" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card shadow rounded" style="background-color: #87CEEB;">
-          <div class="card-body">
-            <i class="fas fa-user-nurse fa-3x"></i>
-            <h5 class="card-title">Sitters Employed</h5>
-            <p class="card-text">View and manage information about employed sitters.</p>
-            <a href="#" class="btn btn-primary">View Details</a>
-          </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow rounded" style="background-image: url('{% static 'IMG/payments.jpg' %}'); background-size: cover; background-position: center;">
+                <div class="card-body">
+                    <i class="fas fa-hand-holding-usd fa-3x  icon-color"></i>
+                    <h5 class="card-title" style="color: white;">Payments</h5>
+                    <p class="card-text" style="color: white;">View and manage payment information.</p>
+                    <a href="/payments/" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card shadow rounded" style="background-color: #87CEEB;">
-          <div class="card-body">
-            <i class="fas fa-hand-holding-usd fa-3x"></i>
-            <h5 class="card-title">Payments</h5>
-            <p class="card-text">View and manage payment information.</p>
-            <a href="#" class="btn btn-primary">View Details</a>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="row">
-      <div class="col-md-4 mb-3">
-        <div class="card shadow rounded" style="background-color: #87CEEB;">
-          <div class="card-body">
-            <i class="fas fa-book fa-3x"></i>
-            <h5 class="card-title">Curriculum</h5>
-            <p class="card-text">Access and update the daycare's curriculum.</p>
-            <a href="#" class="btn btn-primary">View Details</a>
-          </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow rounded" style="background-image: url('{% static 'IMG/GUN.jpg' %}'); background-size: cover; background-position: center;">
+                <div class="card-body">
+                    <i class="fas fa-book fa-3x  icon-color" ></i>
+                    <h5 class="card-title" style="color: white;">Curriculum</h5>
+                    <p class="card-text" style="color: white;">Access and update the daycare's curriculum.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card shadow rounded" style="background-color: #87CEEB;">
-          <div class="card-body">
-            <i class="fas fa-calendar-alt fa-3x"></i>
-            <h5 class="card-title">Schedule</h5>
-            <p class="card-text">Manage the daycare's daily schedule.</p>
-            <a href="#" class="btn btn-primary">View Details</a>
-          </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow rounded" style="background-image: url('{% static 'IMG/cal.jpg' %}'); background-size: cover; background-position: center;">
+                <div class="card-body">
+                    <i class="fas fa-calendar-alt fa-3x  icon-color" ></i>
+                    <h5 class="card-title" style="color: white;">Schedule</h5>
+                    <p class="card-text" style="color: white;">Manage the daycare's daily schedule.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card shadow rounded" style="background-color: #87CEEB;">
-          <div class="card-body">
-            <i class="fas fa-chart-line fa-3x"></i>
-            <h5 class="card-title">Analytics</h5>
-            <p class="card-text">Analyze daycare performance with detailed statistics.</p>
-            <a href="#" class="btn btn-primary">View Details</a>
-          </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow rounded" style="background-image: url('{% static '/IMG/inventory.jpg' %}'); background-size: cover; background-position: center;">
+                <div class="card-body">
+                    <i class="fas fa-chart-line fa-3x  icon-color"></i>
+                    <h5 class="card-title" style="color: white;">Analytics</h5>
+                    <p class="card-text" style="color: white;">Analyze daycare performance with detailed statistics.</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>  
+</div>
 {% endblock %}

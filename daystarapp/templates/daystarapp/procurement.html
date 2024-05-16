@@ -1,9 +1,17 @@
 {% extends 'daystarapp/base.html' %}
 {% load static %}
 {% block body %}
+<div class="container-fluid">
+    <div class="row">
+          <h2 class="text-center m-4">
+        All Stock</h2>
+      <div class="col-md-6"> <!-- Right side -->
+        <a href="{% url "procurement_reg" %}" class="btn btn-primary m-">Add Stock</a>
+      </div>
+    </div>
+    <hr>
 <div class="modal-footer">
     <div class="container-fluid">
-        <h3 class="m-4">All Items</h3>
         <div class="row">
             {% for item in procurement_items %}
             <div class="col-md-4 mb-4">

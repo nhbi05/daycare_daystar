@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DayStar</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min (3).css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
 </head>
@@ -25,16 +25,22 @@
                   <span class="visually-hidden">(current)</span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/baby/">
-                  <i class="fa-solid fa-baby fa-lg"></i>All Babies</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa-solid fa-money-check-dollar"></i>Babies</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/baby/">Baby Info</a>
+                  <a class="dropdown-item" href="/baby_checkin/">CheckIn Time</a>
+                  <a class="dropdown-item" href="/baby_checkout/">CheckOut Time</a>
+                </div>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/sitter/">
-                  Sitters</a>
+                  <i class="fa-solid fa-user"></i>Sitters</a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Payments</a>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa-solid fa-money-check-dollar"></i>Payments</a>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="/sitter_status/">Sitter Payment</a>
                   <a class="dropdown-item" href="/payments/">Baby Payment</a>
@@ -46,7 +52,7 @@
               </li>
               <li class="nav-item"> 
                 <a class="nav-link" href="/logout/">
-                  <i class="fa-solid fa-cart-shopping fa-lg"></i>Logout</a>
+                  <i class="fa-solid fa-arrow-right-from-bracket fa-lg" ></i>Logout</a>
               </li>
             </ul>
             <form class="d-flex">

@@ -14,19 +14,7 @@ from django.template import loader
 def landing_page (request):
     return render (request, 'daystarapp/landingpage.html')
 
-#Register the user
-#def register(request):
-    form3 = CreateUserForm()
-    if request.method == "POST":
-        form3 = CreateUserForm(request.POST)
-        if form3.is_valid():
-            form3.save()
-            return redirect('login')
-    context = {'form3': form3}
-    return render(request, 'daystarapp/register.html', context=context)        
-
-
-
+#Register the user     
 def register(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -97,10 +85,9 @@ def addBaby(request):
             new_last_name = form.cleaned_data['b_lastname']
             new_gender = form.cleaned_data['b_gender']
             new_age = form.cleaned_data['b_age']
-            new_parentsname = form.cleaned_data['b_parentsname']
-            new_pickedby = form.cleaned_data['b_pickedby']
-            new_broughtby = form.cleaned_data['b_broughtby']
-            new_periodofstay = form.cleaned_data['periodofstay']
+            new_fathers_name = form.cleaned_data['b_fathers_name']
+            new_mothers_name = form.cleaned_data['b_mothers_name']
+            new_DOB = form.cleaned_data['b_DOB']
             new_location = form.cleaned_data['b_location']
 
             new_baby = Baby(
@@ -109,10 +96,9 @@ def addBaby(request):
                 b_gender = new_gender,
                 b_age = new_age,
                 b_location = new_location,
-                b_pickedby = new_pickedby,
-                b_broughtby = new_broughtby,
-                periodofstay = new_periodofstay,
-                b_parentsname = new_parentsname,
+                b_fathers_name = new_fathers_name,
+                b_mothers_name = new_mothers_name,
+                b_DOB = new_DOB,
             )
             new_baby.save()
             return render(request, 'daystarapp/baby_reg.html', {
@@ -154,13 +140,173 @@ def babyedit(request, id):
 @login_required
 def delete_baby(request, id):
     baby = Baby.objects.get(id=id)
-
     if request.method == 'POST':
         baby.delete()
         redirect_url = reverse('baby')
         return HttpResponseRedirect(redirect_url)
     else:
         return render(request, 'daystarapp/baby_delete.html', {'baby': baby})
+    
+#checkin
+@login_required
+def babycheckin(request):
+    return render (request, 'daystarapp/baby_checkin.html' , {
+        'babies':BabyCheckin.objects.all()
+    })
+def addBabycheckin(request):
+    if request.method == 'POST':
+        form = BabyCheckinForm(request.POST)
+        if form.is_valid():
+            new_baby_name = form.cleaned_data['baby_name']
+            new_broughtby = form.cleaned_data['broughtby']
+            new_timeIn = form.cleaned_data['timeIn']
+            
+
+            new_checkin = BabyCheckin(
+                baby_name = new_baby_name,
+                broughtby = new_broughtby,
+                timeIn = new_timeIn,
+
+            )
+            new_checkin.save()
+            return render(request, 'daystarapp/baby_checkin.html', {
+                'form': BabyCheckinForm(),
+                'success': True,
+            })
+        else:
+            print ("Form is not valid")
+            return render(request, 'daystarapp/babycheckin_reg.html', {
+              'form': BabyCheckinForm(),
+               'success': False,
+            })
+    else:
+        form = BabyCheckinForm()
+        return render(request, 'daystarapp/babycheckin_reg.html', {
+            'form' : BabyCheckinForm()
+        })    
+
+@login_required   
+def view_baby_checkin(request, id):
+    baby = BabyCheckin.objects.get(pk=id)
+    return HttpResponseRedirect(reverse('baby_checkin'))
+
+
+@login_required
+def baby_checkinedit(request, id):
+    baby_checkin = BabyCheckin.objects.get(id=id)
+    if request.method == 'POST':
+        form = BabyCheckinForm(request.POST, instance=baby_checkin)
+        if form.is_valid():
+            form.save()
+            return render(request, 'daystarapp/babycheckin_edit.html', {
+                'form_checkin': form,
+                'success': True,
+                'baby': baby_checkin
+            })
+        else:
+            print("Form is not valid")
+    else:
+        form = BabyCheckinForm(instance=baby_checkin)
+    return render(request, 'daystarapp/babycheckin_edit.html', {
+        'form_checkin': form,
+        'success': False,
+        'baby': baby_checkin
+    })
+
+@login_required
+def deletecheckin_baby(request, id):
+    baby_checkin = BabyCheckin.objects.get(id=id)
+    if request.method == 'POST':
+        baby_checkin.delete()
+        redirect_url = reverse('baby_checkin')
+        return HttpResponseRedirect(redirect_url)
+    else:
+        return render(request, 'daystarapp/babycheckin_delete.html', {'baby_checkin': baby_checkin})
+    
+
+#checkout
+@login_required
+def babycheckout(request):
+    return render (request, 'daystarapp/baby_checkout.html' , {
+        'babies':BabyCheckout.objects.all()
+    })
+
+@login_required
+def addBabycheckout(request):
+    if request.method == 'POST':
+        form = BabyCheckoutForm(request.POST)
+        if form.is_valid():
+            new_baby_name = form.cleaned_data['baby_name']
+            new_picked_by = form.cleaned_data['picked_by']
+            new_timeOut = form.cleaned_data['timeOut']
+            new_comment = form.cleaned_data['comment']
+            
+
+            new_checkout = BabyCheckout(
+                baby_name = new_baby_name,
+                picked_by = new_picked_by,
+                timeOut = new_timeOut,
+                comment = new_comment
+            )
+            new_checkout.save()
+            return render(request, 'daystarapp/baby_checkout.html', {
+                'form': BabyCheckoutForm(),
+                'success': True,
+            })
+        else:
+            print ("Form is not valid")
+            return render(request, 'daystarapp/babycheckout_reg.html', {
+              'form': BabyCheckoutForm(),
+               'success': False,
+            })
+    else:
+        form = BabyCheckoutForm()
+        return render(request, 'daystarapp/babycheckout_reg.html', {
+            'form' : BabyCheckoutForm()
+        })    
+
+@login_required   
+def view_baby_checkout(request, id):
+    baby = BabyCheckout.objects.get(pk=id)
+    return HttpResponseRedirect(reverse('baby_checkout'))
+
+
+@login_required
+def baby_checkoutedit(request, id):
+    baby_checkout = BabyCheckout.objects.get(id=id)
+    if request.method == 'POST':
+        form = BabyCheckoutForm(request.POST, instance=baby_checkout)
+        if form.is_valid():
+            form.save()
+            return render(request, 'daystarapp/babycheckout_edit.html', {
+                'form_checkout': form,
+                'success': True,
+                'baby': baby_checkout
+            })
+        else:
+            print("Form is not valid")
+    else:
+        form = BabyCheckoutForm(instance=baby_checkout)
+    return render(request, 'daystarapp/babycheckout_edit.html', {
+        'form_checkout': form,
+        'success': False,
+        'baby': baby_checkout
+    })
+
+@login_required
+def deletecheckout_baby(request, id):
+    baby_checkout = BabyCheckout.objects.get(id=id)
+    if request.method == 'POST':
+        baby_checkout.delete()
+        redirect_url = reverse('baby_checkout')
+        return HttpResponseRedirect(redirect_url)
+    else:
+        return render(request, 'daystarapp/babycheckout_delete.html', {'baby_checkout': baby_checkout})    
+    
+
+
+
+
 
 @login_required
 #sitter views
@@ -306,7 +452,7 @@ def payment_update(request, id):
 
 @login_required
 def payment_delete(request, id):
-    payment = Payment.objects.get(id=id)
+    payment = Payment.objects.get(pk=id)
     if request.method == 'POST':
         payment.delete()
         return redirect('payments')
@@ -326,34 +472,35 @@ def sitter_payment(request):
     return render(request, 'daystarapp/sitter_status.html', {
            'payment_sitter' : payment_sitter})
 
-#def view_payment(request, id):
-    #sitter_payment = Payment.objects.get(id=id)
-    #return HttpResponseRedirect(reverse('payments'))
+def view_sitter_payment(request, pk):
+    sitter_payment = SitterPayment.objects.get(id=pk)
+    return HttpResponseRedirect(reverse('sitter_status'))
 
 @login_required
-# Update operation
 def update_sitter_payment(request, id):
     sitter_payment = SitterPayment.objects.get(id=id)
     if request.method == 'POST':
         form7 = SitterPaymentForm(request.POST, instance=sitter_payment)
         if form7.is_valid():
+
             form7.save()
-            return render(request, 'daystarapp/edit.html', {
-                'form7': form7,
-                'success': True,
-            })
+            return redirect('sitter_status')
+        else:
+            print ("Form is not valid")
     else:
-        form = SitterPaymentForm(instance=sitter_payment)
-    return render(request, 'daystarapp/edit.html', {
-        'form7': form7,
-        'success': False,
-    })
+        form7 = SitterPaymentForm(instance=sitter_payment)
+    return render(request, 'daystarapp/status_edit.html', {
+        "form7":form7,
+        'sitter_payment': sitter_payment
+    }) 
+
+
 @login_required
 # Delete operation
 def delete_sitter_payment(request, id):
     sitter_payment = SitterPayment.objects.get( id=id)
     sitter_payment.delete()
-    return redirect('sitter_payment_list')  # Redirect to the list view after deletion
+    return redirect('sitter_status')  # Redirect to the list view after deletion
 
 @login_required
 def addSitter_status(request):
@@ -387,6 +534,8 @@ def addSitter_status(request):
     return render(request, 'daystarapp/s_paymentadd.html', {
         'form7': form7,  # Use the form instance instead of creating a new one
     })
+
+
 
 
 

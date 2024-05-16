@@ -21,12 +21,10 @@
                       <strong>Gender:</strong> {{ baby.b_gender }}<br>
                       <strong>Age:</strong> {{ baby.b_age }}<br>
                       <strong>Location:</strong> {{ baby.b_location }}<br>
-                      <strong>Parents Name:</strong> {{ baby.b_parentsname }}<br>
-                      <strong>Time Spent:</strong> {{ baby.periodofstay }}<br>
-                      <strong>Dropped by:</strong> {{ baby.b_broughtby }}<br>
-                      <strong>Picked by:</strong> {{ baby.b_pickedby }}<br>
-                      <strong>TimeIn:</strong> {{ baby.timein }}<br>
-                      <strong>TimeOut:</strong> {{ baby.timeout }}<br>
+                    <strong>Father's Name:</strong> {{ baby.b_fathers_name }} <br>
+                    <strong>Mother's Name:</strong> {{ baby.b_mothers_name }} <br>
+                    <strong>Date of Birth:</strong> {{ baby.b_DOB }} <br>
+                      
                   </p>
                   <a href="{% url 'view_baby' baby.id %}" class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#myModal{{ baby.id }}">
                       View Details
@@ -48,12 +46,10 @@
                                   <li><strong>Gender:</strong> {{ baby.b_gender }}</li>
                                   <li><strong>Age:</strong> {{ baby.b_age }}</li>
                                   <li><strong>Location:</strong> {{ baby.b_location }}</li>
-                                  <li><strong>Parents Name:</strong> {{ baby.b_parentsname }}</li>
-                                  <li><strong>Time Spent:</strong> {{ baby.periodofstay }}</li>
-                                  <li><strong>Dropped by:</strong> {{ baby.b_broughtby }}</li>
-                                  <li><strong>Picked by:</strong> {{ baby.b_pickedby }}</li>
-                                  <li><strong>TimeIn:</strong> {{ baby.timein }}</li>
-                                  <li><strong>TimeOut:</strong> {{ baby.timeout }}</li>
+                                  <li><strong>Father's Name:</strong> {{ baby.b_fathers_name }}</li>
+                                  <li><strong>Mother's Name:</strong> {{ baby.b_mothers_name }}</li>
+                                  <li><strong>Date of Birth:</strong> {{ baby.b_DOB }}</li>
+                                  
                               </ul>
                           </div>
                           <div class="modal-footer">

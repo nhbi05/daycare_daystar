@@ -1,0 +1,65 @@
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <h2 class="text-center m-4">All Babies Check-Out</h2>
+    <div class="col-md-6">
+      <a href="{% url 'babycheckout_reg' %}" class="btn btn-primary m-">Add Check-out Time</a>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    {% for baby_checkout in babies %}
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-header">Check-Out {{ baby_checkout.id }}</div>
+        <div class="card-body">
+          <img src="{% static 'IMG/daycare12.jpg' %}" class="rounded-circle" alt="Baby Image" style="width: 100px; height: 100px; object-fit: cover;">
+          <p class="card-text">
+            <strong> Name:{{ baby_checkout.baby_name }}</strong><br>
+            <strong>Picked By:</strong> {{ baby_checkout.picked_by }}<br>
+            <strong>Time Out:</strong> {{ baby_checkout.timeOut }}<br>
+          </p>
+          <a href="{% url 'view_baby' baby_checkout.id %}" class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#myModal{{ baby_checkout.id }}">
+            View Details
+          </a>
+          <!-- Modal -->
+          <div class="modal fade" id="myModal{{ baby_checkout.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel{{ baby_checkout.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel{{ baby_checkout.id }}">Baby Check-Out Details</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <ul class="list-unstyled">
+                    <li><strong>Baby Name:</strong> 
+                      {% for baby in baby_checkout.baby_name.all %}
+                        {{ baby.first_name }} {{ baby.last_name }}
+                        {% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                    </li>
+                    <li><strong>Brought By:</strong> {{ baby_checkout.broughtby }}</li>
+                    <li><strong>Time In:</strong> {{ baby_checkout.timeIn }}</li>
+                  </ul>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <a href="{% url 'babycheckin_edit' baby_checkout.id %}" class="btn btn-warning me-1">
+                    <i class="fa-solid fa-pen-to-square fa-lg"></i> Edit
+                  </a>
+                  <a href="{% url 'babycheckout_delete' baby_checkout.id %}" class="btn btn-danger me-1">
+                    <i class="fa-solid fa-trash fa-lg"></i> Delete
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
