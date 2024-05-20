@@ -1,10 +1,20 @@
 {% extends 'daystarapp/base.html' %}
-{% block content %}
-  <h2>Transaction Detail</h2>
-  <p><strong>ID:</strong> {{ transaction.id }}</p>
-  <p><strong>Buyer:</strong> {{ transaction.buyer }}</p>
-  <p><strong>Doll:</strong> {{ transaction.doll }}</p>
-  <p><strong>Quantity:</strong> {{ transaction.quantity }}</p>
-  <p><strong>Total Amount:</strong> {{ transaction.total_amount }}</p>
-  <p><strong>Timestamp:</strong> {{ transaction.timestamp }}</p>
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm mt-5">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Transaction Detail</h2>
+                    <p class="card-text"><strong>ID:</strong> {{ transaction.id }}</p>
+                    <p class="card-text"><strong>Buyer:</strong> {{ transaction.buyer }}</p>
+                    <p class="card-text"><strong>Doll:</strong> {{ transaction.doll }}</p>
+                    <p class="card-text"><strong>Quantity:</strong> {{ transaction.quantity }}</p>
+                    <p class="card-text"><strong>Total Amount:</strong> {{ transaction.total_amount }}</p>
+                    <p class="card-text"><strong>Timestamp:</strong> {{ transaction.timestamp }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

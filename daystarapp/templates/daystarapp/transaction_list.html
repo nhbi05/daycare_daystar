@@ -5,13 +5,26 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <h2 class="text-center">Transaction List</h2>
-            <ul class="list-group">
-                {% for transaction in transactions %}
-                <li class="list-group-item"><a href="{% url 'transaction_detail' transaction.pk %}">{{ transaction }}</a></li>
-                {% empty %}
-                <li class="list-group-item">No transactions available</li>
-                {% endfor %}
-            </ul>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Transaction Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.pk }}</td>
+                        <td><a href="{% url 'transaction_detail' transaction.pk %}">{{ transaction }}</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2">No transactions available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             <a href="{% url 'dolls' %}" class="btn btn-primary mt-3">Back to Dollpage</a>
         </div>
     </div>
