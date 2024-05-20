@@ -55,13 +55,10 @@
                   <i class="fa-solid fa-arrow-right-from-bracket fa-lg" ></i>Logout</a>
               </li>
             </ul>
-            <form class="d-flex" action="{% url 'search' %}" method="POST">
-              {% csrf_token %}
-              <input class="form-control me-sm-2" type="search" placeholder="Search" name="query">
-              <!-- Adding the 'name="query"' attribute to send the search query -->
-              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-          </form>
-          
+            <li class="nav-item">
+              <a class="nav-link" href="/register/">
+                <i class="fa-solid fa-user fa-2x " style ="color:white;"></i>ADMIN</a>
+            </li>
           </div>
         </div>
       </nav>
