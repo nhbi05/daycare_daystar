@@ -27,7 +27,7 @@
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa-solid fa-money-check-dollar"></i>Babies</a>
+                  <i class="fas fa-baby fa-lg"></i>Babies</a>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="/baby/">Baby Info</a>
                   <a class="dropdown-item" href="/baby_checkin/">CheckIn Time</a>
@@ -55,10 +55,13 @@
                   <i class="fa-solid fa-arrow-right-from-bracket fa-lg" ></i>Logout</a>
               </li>
             </ul>
-            <form class="d-flex">
-              <input class="form-control me-sm-2" type="search" placeholder="Search">
+            <form class="d-flex" action="{% url 'search' %}" method="POST">
+              {% csrf_token %}
+              <input class="form-control me-sm-2" type="search" placeholder="Search" name="query">
+              <!-- Adding the 'name="query"' attribute to send the search query -->
               <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
+          </form>
+          
           </div>
         </div>
       </nav>

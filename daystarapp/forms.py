@@ -71,10 +71,11 @@ class BabyCheckinForm(forms.ModelForm):
 class BabyCheckoutForm(forms.ModelForm):
     class Meta:
         model = BabyCheckout
-        fields = [ 'baby_name', 'picked_by','timeOut','comment']
+        fields = [ 'baby_name', 'picked_by','timeOut','period_of_stay','comment']
         labels = { 
             'baby_name': 'Baby Name', 
             'picked_by': 'Picked By',
+            'period_of_stay':'Period of Stay',
             'timeOut': 'Time Out',
             'comment' : 'comment'
             }
@@ -82,14 +83,10 @@ class BabyCheckoutForm(forms.ModelForm):
         'baby_name':forms.Select(attrs={'class':'form-control'}), 
         'picked_by':forms.TextInput(attrs={'class':'form-control'}), 
         'comment':forms.TextInput(attrs={'class':'form-control'}), 
+        'period_of_stay':forms.Select(attrs={'class':'form-control'}), 
         'timeOut' :forms.DateField(widget=forms.DateInput(attrs={'type':'date','placeholder': 'Search'}))
         
     }    
-
-
-
-
-
 
 
 
@@ -219,3 +216,7 @@ class TransactionForm(forms.ModelForm):
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             
         }
+
+        
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Search', max_length=100, required=False)

@@ -169,7 +169,7 @@ def addBabycheckin(request):
 
             )
             new_checkin.save()
-            return render(request, 'daystarapp/baby_checkin.html', {
+            return render(request, 'daystarapp/babycheckin_reg.html', {
                 'form': BabyCheckinForm(),
                 'success': True,
             })
@@ -240,16 +240,18 @@ def addBabycheckout(request):
             new_picked_by = form.cleaned_data['picked_by']
             new_timeOut = form.cleaned_data['timeOut']
             new_comment = form.cleaned_data['comment']
+            new_period_of_stay = form.cleaned_data['period_of_stay']
             
 
             new_checkout = BabyCheckout(
                 baby_name = new_baby_name,
                 picked_by = new_picked_by,
                 timeOut = new_timeOut,
-                comment = new_comment
+                comment = new_comment,
+                period_of_stay=new_period_of_stay,
             )
             new_checkout.save()
-            return render(request, 'daystarapp/baby_checkout.html', {
+            return render(request, 'daystarapp/babycheckout_reg.html', {
                 'form': BabyCheckoutForm(),
                 'success': True,
             })
@@ -439,20 +441,22 @@ def create_payment(request):
         }) 
 
 @login_required
-def payment_update(request, id):
-    payment = Payment.objects.get(id=id)
+def payment_update(request,payment_id):
+    payment = Payment.objects.get(id=payment_id)
     if request.method == 'POST':
         form5 = PaymentForm(request.POST, instance=payment)
         if form5.is_valid():
             form5.save()
-            return redirect('payments', id=id)
+            return redirect('payments')
+
     else:
         form5 = PaymentForm(instance=payment)
-    return render(request, 'daystarapp/payment_reg.html', {'form5': form5})
+    return render(request, 'daystarapp/update_babypayment.html', {'form5': form5,
+                                                                  'payment': payment})
 
 @login_required
-def payment_delete(request, id):
-    payment = Payment.objects.get(pk=id)
+def payment_delete(request, payment_id):
+    payment = Payment.objects.get(pk=payment_id)
     if request.method == 'POST':
         payment.delete()
         return redirect('payments')
@@ -477,8 +481,8 @@ def view_sitter_payment(request, pk):
     return HttpResponseRedirect(reverse('sitter_status'))
 
 @login_required
-def update_sitter_payment(request, id):
-    sitter_payment = SitterPayment.objects.get(id=id)
+def update_sitter_payment(request, update_id):
+    sitter_payment = SitterPayment.objects.get(id=update_id)
     if request.method == 'POST':
         form7 = SitterPaymentForm(request.POST, instance=sitter_payment)
         if form7.is_valid():
@@ -497,8 +501,8 @@ def update_sitter_payment(request, id):
 
 @login_required
 # Delete operation
-def delete_sitter_payment(request, id):
-    sitter_payment = SitterPayment.objects.get( id=id)
+def delete_sitter_payment(request, sitter_id):
+    sitter_payment = SitterPayment.objects.get( id=sitter_id)
     sitter_payment.delete()
     return redirect('sitter_status')  # Redirect to the list view after deletion
 
@@ -586,6 +590,7 @@ def create_procurement(request):
         }) 
 
 @login_required
+@login_required
 def procurement_update(request, id):
     item = Procurement.objects.get(id=id)
     if request.method == 'POST':
@@ -595,13 +600,16 @@ def procurement_update(request, id):
             return render(request, 'daystarapp/procurement_edit.html', {
                 'form8': form8,
                 'success': True,
+                'item': item,  # Pass the 'item' object to the template
             })
     else:
         form8 = ProcurementForm(instance=item)
     return render(request, 'daystarapp/procurement_edit.html', {
         'form8': form8,
         'success': False,
+        'item': item,  # Pass the 'item' object to the template
     })
+
 
 @login_required
 def procurement_delete(request, id):
@@ -719,5 +727,21 @@ def transactions(request):
 
 
 
+#Search  button
+# daystarapp/views.py
 
 
+
+def search_results(request):
+    query = request.GET.get('query')
+    babies = []
+
+    if query:
+        # Search for babies based on their first or last name
+        babies = Baby.objects.filter(b_firstname__icontains=query) | Baby.objects.filter(b_lastname__icontains=query)
+    
+    context = {
+        'babies': babies,
+        'query': query,
+    }
+    return render(request, 'daystarapp/search_results.html', context)

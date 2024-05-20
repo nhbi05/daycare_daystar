@@ -16,9 +16,9 @@
                         <i class="fa-solid fa-pen-to-square fa-lg"></i> Update Salary
                     </div>
                     <div class="card-body">
-                        <form action="{% url 'status_edit' sitter.id  %}" method="POST">
+                        <form action="{% url 'status_edit' update_id=sitter_payment.id %}" method="POST">
                             {% csrf_token %}
-                            {{ form|crispy }}
+                            {{ form7|crispy }}
                             <button type="submit" class="btn btn-primary">Update</button>
                             <a href="{% url 'sitter_status' %}" class="btn btn-secondary">Cancel</a>
                         </form>

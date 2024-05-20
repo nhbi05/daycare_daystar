@@ -1,0 +1,15 @@
+{% extends 'daystarapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1>
+
+<h2>Babies</h2>
+{% for baby in babies %}
+    <p>{{ baby.b_firstname }} {{ baby.b_lastname }}</p>
+{% empty %}
+    <p>No babies found.</p>
+{% endfor %}
+
+
+{% endblock %}

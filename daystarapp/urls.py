@@ -39,13 +39,15 @@ urlpatterns=[
     path('payment_reg/', views.create_payment, name='payment_reg'),
     path('payment_update/<int:id>', views.payment_update, name='payment_update'),
     path('<int:id>', views.view_payment, name='view_payment'),
-    path('payment_delete/<int:id>', views.payment_delete,name="payment_delete"),#to be fixed
+    path('update_babypayment/<int:payment_id>', views.payment_update,name="update_babypayment"),
+    path('payment_delete/<int:payment_id>', views.payment_delete,name="payment_delete"),
     #sitter payments
     path('sitter_status/', views.sitter_payment, name='sitter_status'),
     path('s_paymentadd/', views.addSitter_status, name="s_paymentadd"),
     path('<int:id>', views.view_sitter_payment, name='view_sitter_payment'),
-    path('status_edit/<int:id>', views.update_sitter_payment, name='status_edit'),
-    path('delete_payment/<int:id>', views.delete_sitter_payment, name='delete_payment'),
+    path('status_edit/<int:update_id>/', views.update_sitter_payment, name='status_edit'),
+    path('delete_sitter_payment/<int:sitter_id>/', views.delete_sitter_payment, name='delete_sitter_payment'),
+
     #procuremnent
     path('procurementhome/', views.procurement_landingpage, name='procurementhome'),
     path('procurement/', views.procurement, name='procurement'),
@@ -65,4 +67,7 @@ urlpatterns=[
     path('transaction/new/', views.make_transaction, name='make_transaction'),
     path('transaction/<int:pk>/', views.transaction_detail, name='transaction_detail'),
     path('transactions/', views.transaction_list, name='transaction_list'),
+
+    #Search bar
+    path('search_results/', views.search_results, name='search'),
 ]

@@ -27,11 +27,13 @@
                             <td>{{ sitter.id }}</td>
                             <td>{{ sitter.sitter_name }}</td>
                             <td>
-                            <ul>
-                                {% for baby in sitter.babies_assigned.all %}
-                                    <li>{{ baby.b_lastname }} {{ baby.b_firstname }}</li>
-                                {% endfor %}
-                            </ul>
+                                <ul>
+                                    {% for baby in sitter.babies_assigned.all %}
+                                        <li>{{ baby.b_lastname }} {{ baby.b_firstname }}</li>
+                                    {% empty %}
+                                        <li>Baby not found</li>
+                                    {% endfor %}
+                                </ul>
                             </td>
                             <td>{{ sitter.paid_on }}</td>
                             <td>
@@ -43,7 +45,9 @@
                             </td>
                             <td>{{ sitter.payment_amount }}</td>
                             <td>
-                                <a href="{% url 'view_sitter_payment' sitter.id %}" class="text-primary">Read</a>
+                                <a href="{% url 'view_sitter_payment' sitter.id %}" class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#sitterDetailsModal{{ sitter.id }}">
+                                    View Details
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -51,4 +55,50 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal -->
+    {% for sitter in payment_sitter %}
+    <div class="modal fade" id="sitterDetailsModal{{ sitter.id }}" tabindex="-1" aria-labelledby="sitterDetailsModalLabel{{ sitter.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sitterDetailsModalLabel{{ sitter.id }}">Sitter Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Sitter Name:</strong> {{ sitter.sitter_name }}</p>
+                    <p><strong>Babies Assigned:</strong>
+                        <ul>
+                            {% for baby in sitter.babies_assigned.all %}
+                                <li>{{ baby.b_lastname }} {{ baby.b_firstname }}</li>
+                            {% empty %}
+                                <li>No babies assigned</li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+                    <p><strong>Date:</strong> {{ sitter.paid_on }}</p>
+                    <p><strong>Status:</strong>
+                        {% if sitter.status == 0 %}
+                            <span class="text-warning">Off duty</span>
+                        {% else %}
+                            <span class="text-success">Active</span>
+                        {% endif %}
+                    </p>
+                    <p><strong>Daily Salary:</strong> {{ sitter.payment_amount }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{% url 'status_edit' sitter.id %}" class="btn btn-warning me-1">
+                        <i class="fa-solid fa-pen-to-square fa-lg"></i> Edit
+                    </a>
+                    
+                    <a href="{% url 'delete_sitter_payment' sitter.id %}" class="btn btn-danger me-1">
+                        <i class="fa-solid fa-trash fa-lg"></i> Delete
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 {% endblock %}
